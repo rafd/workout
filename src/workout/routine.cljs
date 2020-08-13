@@ -16,7 +16,7 @@
     (shuffle)
     (first)))
 
-(defn make-routine [{:keys [exercise-count]}]
+(defn make-routine [exercise-count]
   (->> (tags)
        (shuffle)
        (cycle)
@@ -38,12 +38,3 @@
                        (update :routine conj next-exercise))))
          {:available-exercises exercises :routine []})
        :routine))
-
-(defn current-exercise [routine]
-  (first routine))
-
-(defn has-exercise? [routine]
-  (boolean (seq routine)))
-
-(defn has-ended? [routine]
-  (= routine []))

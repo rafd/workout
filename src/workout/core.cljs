@@ -5,52 +5,74 @@
     [workout.speech :refer [speak!]]
     [clojure.string :as str]))
 
-(def duration (* 4 1000))
+(def exercise-duration (* 4 1000))
 (def rest-duration (* 2 1000))
-(def exercise-count 2)
+(def exercise-count 4)
 
-(defonce routine (r/atom nil))
-(defonce timers (atom #{}))
+(defonce display-subject (r/atom :start))
 
-(declare do-exercise!)
+(defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
+  (as-> exercises $
+        (map (fn [exercise]
+              [[:display exercise]
+               [:say (exercise :name)]
+               [:delay  (/ exercise-duration 2)]
+               [:say  "halfway"]
+               [:delay  (/ exercise-duration 2)]]) $)
+        (interpose [[:display :rest]
+                    [:say "rest"]
+                    [:delay rest-duration]] $)
+        (apply concat $)
+        (concat $ [[:display :done]
+                   [:say "done"]])))
 
-(defn alert-halfway! []
-  (speak! "halfway"))
+(defmulti process-instruction!
+  (fn [[instruction-type _]]
+    instruction-type))
 
-(defn alert-finished! []
-  (swap! routine rest)
-  (if (routine/has-ended? @routine)
-    (speak! "finished workout")
-    (do
-      (speak! "rest")
-      (swap! timers conj (js/setTimeout do-exercise! rest-duration)))))
+(defmethod process-instruction! :say
+  [[_ text]]
+  (speak! text))
 
-(defn do-exercise! []
-  (let [exercise (routine/current-exercise @routine)]
-    (speak! (:name exercise))
-    (swap! timers conj (js/setTimeout alert-halfway! (/ duration 2)))
-    (swap! timers conj (js/setTimeout alert-finished! duration))))
+(defmethod process-instruction! :display
+  [[_ subject]]
+  (reset! display-subject subject))
+
+(defmethod process-instruction! :default [_])
+
+(defn process-schedule [schedule]
+  (let [[instruction-type arg :as instruction]  (first schedule)]
+    (process-instruction! instruction)
+    (js/setTimeout
+      #(process-schedule (rest schedule))
+      (if (= :delay instruction-type)
+        arg
+        0))))
+
 
 (defn start! []
-  (reset! routine (routine/make-routine {:exercise-count exercise-count}))
-  (do-exercise!))
-
-(defn force-stop! []
-  (doseq [timer @timers] (js/clearTimeout timer))
-  (reset! routine nil))
+  (process-schedule (generate-schedule {:exercise-duration exercise-duration
+                                        :rest-duration rest-duration
+                                        :exercises (routine/make-routine exercise-count)})))
 
 (defn app-view []
-  (cond
-    (routine/has-ended? @routine)
+  (case @display-subject
+    :start
+    [:button {:on-click #(start!)} "start"]
+
+    :rest
+    [:div "RESTING"]
+
+    :done
     [:div
      [:div "GOOD JOB"]
      [:button {:on-click #(start!)} "restart"]]
 
-    (routine/has-exercise? @routine)
-    (let [exercise (routine/current-exercise @routine)
+    ; default
+    (let [exercise @display-subject
           filepath (str "/exercises/" (exercise :filename))]
       [:div
-       [:button {:on-click #(force-stop!)} "stop"]
+       ;[:button {:on-click #(force-stop!)} "stop"]
        [:div (exercise :name)]
        (cond
          (str/ends-with? filepath ".mp4")
@@ -60,6 +82,4 @@
            :muted true
            :loop true}]
          (str/ends-with? filepath ".gif")
-         [:img {:src filepath}])])
-
-    :else [:button {:on-click #(start!)} "start"]))
+         [:img {:src filepath}])])))
