@@ -10,6 +10,7 @@
 (def exercise-count 4)
 
 (defonce display-subject (r/atom :start))
+(defonce schedule-timeout (atom nil))
 
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
@@ -40,20 +41,23 @@
 
 (defmethod process-instruction! :default [_])
 
-(defn process-schedule [schedule]
+(defn process-schedule! [schedule]
   (let [[instruction-type arg :as instruction]  (first schedule)]
     (process-instruction! instruction)
-    (js/setTimeout
-      #(process-schedule (rest schedule))
-      (if (= :delay instruction-type)
-        arg
-        0))))
-
+    (reset! schedule-timeout (js/setTimeout
+                               #(process-schedule! (rest schedule))
+                               (if (= :delay instruction-type)
+                                 arg
+                                 0)))))
 
 (defn start! []
-  (process-schedule (generate-schedule {:exercise-duration exercise-duration
-                                        :rest-duration rest-duration
-                                        :exercises (routine/make-routine exercise-count)})))
+  (process-schedule! (generate-schedule {:exercise-duration exercise-duration
+                                         :rest-duration rest-duration
+                                         :exercises (routine/make-routine exercise-count)})))
+
+(defn force-stop! []
+  (js/clearTimeout @schedule-timeout)
+  (reset! display-subject :start))
 
 (defn app-view []
   (case @display-subject
@@ -61,7 +65,9 @@
     [:button {:on-click #(start!)} "start"]
 
     :rest
-    [:div "RESTING"]
+    [:div
+     [:button {:on-click #(force-stop!)} "stop"]
+     [:div "RESTING"]]
 
     :done
     [:div
@@ -72,7 +78,7 @@
     (let [exercise @display-subject
           filepath (str "/exercises/" (exercise :filename))]
       [:div
-       ;[:button {:on-click #(force-stop!)} "stop"]
+       [:button {:on-click #(force-stop!)} "stop"]
        [:div (exercise :name)]
        (cond
          (str/ends-with? filepath ".mp4")
