@@ -25,7 +25,7 @@
                     [:delay rest-duration]] $)
         (apply concat $)
         (concat $ [[:display :done]
-                   [:say "done"]])))
+                   [:say "Done! Great job!"]])))
 
 (defmulti process-instruction!
   (fn [[instruction-type _]]
