@@ -71,8 +71,8 @@
 
     :done
     [:div
-     [:div "GOOD JOB"]
-     [:button {:on-click #(start!)} "restart"]]
+     [:button {:on-click #(start!)} "restart"]
+     [:div "GOOD JOB"]]
 
     ; default
     (let [exercise @display-subject
