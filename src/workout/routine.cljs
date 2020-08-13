@@ -4,35 +4,17 @@
     [reagent.core :as r]
     [workout.exercises :refer [exercises]]))
 
-(defn tags []
-  (->> exercises
-       (mapcat (fn [exercise] (exercise :tags)))
-       (set)))
-
-(defn find-exercise [{:keys [tag not-tags exercises]}]
-  (->> exercises
-    (filter (fn [exercise] (and (contains? (exercise :tags) tag)
-                             (empty (set/intersection (exercise :tags) not-tags)))))
-    (shuffle)
-    (first)))
-
 (defn make-routine [exercise-count]
-  (->> (tags)
-       (shuffle)
-       (cycle)
-       (take exercise-count)
-       (reduce (fn [memo tag]
+  (->> (range exercise-count)
+       (reduce (fn [memo _]
                  (let [previous-exercise (last (memo :routine))
-                       next-exercise (or
-                                       (find-exercise {:tag tag
-                                                       :not-tags (if previous-exercise
-                                                                   (previous-exercise :tags)
-                                                                   #{})
-                                                       :exercises (memo :available-exercises)})
-                                       (find-exercise {:tag tag
-                                                       :not-tags #{}
-                                                       :exercises (memo :available-exercises)})
-                                       (rand-nth (vec (memo :available-exercises))))]
+                       next-exercise (->> exercises
+                                          (filter (fn [exercise]
+                                                    (empty? (set/intersection (exercise :tags)
+                                                              (or (:tags previous-exercise)
+                                                                  #{})))))
+                                          (shuffle)
+                                          (first))]
                    (-> memo
                        (update :available-exercises disj next-exercise)
                        (update :routine conj next-exercise))))
