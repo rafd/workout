@@ -42,7 +42,7 @@
 (defn current-exercise [routine]
   (first routine))
 
-(defn has-started? [routine]
+(defn has-exercise? [routine]
   (boolean (seq routine)))
 
 (defn has-ended? [routine]
