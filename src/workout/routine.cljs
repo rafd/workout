@@ -1,24 +1,49 @@
 (ns workout.routine
   (:require
+    [clojure.set :as set]
     [reagent.core :as r]
     [workout.exercises :refer [exercises]]))
 
-(defonce state
-  (r/atom {}))
+(defn tags []
+  (->> exercises
+       (mapcat (fn [exercise] (exercise :tags)))
+       (set)))
 
-(defn create-routine! []
-  (swap! state assoc :sequence (shuffle exercises)))
+(defn find-exercise [{:keys [tag not-tags exercises]}]
+  (->> exercises
+    (filter (fn [exercise] (and (contains? (exercise :tags) tag)
+                             (empty (set/intersection (exercise :tags) not-tags)))))
+    (shuffle)
+    (first)))
 
-(defn current-exercise []
-  (last (@state :sequence)))
+(defn make-routine [{:keys [exercise-count]}]
+  (->> (tags)
+       (shuffle)
+       (cycle)
+       (take exercise-count)
+       (reduce (fn [memo tag]
+                 (let [previous-exercise (last (memo :routine))
+                       next-exercise (or
+                                       (find-exercise {:tag tag
+                                                       :not-tags (if previous-exercise
+                                                                   (previous-exercise :tags)
+                                                                   #{})
+                                                       :exercises (memo :available-exercises)})
+                                       (find-exercise {:tag tag
+                                                       :not-tags #{}
+                                                       :exercises (memo :available-exercises)})
+                                       (rand-nth (vec (memo :available-exercises))))]
+                   (-> memo
+                       (update :available-exercises disj next-exercise)
+                       (update :routine conj next-exercise))))
+         {:available-exercises exercises :routine []})
+       :routine))
 
-(defn next-exercise! []
-  (if (seq (@state :sequence))
-    (swap! state update :sequence pop)
-    nil))
+(defn current-exercise [routine]
+  (first routine))
 
-(defn has-started []
-  (not (= (@state :sequence) nil)))
+(defn has-started? [routine]
+  (boolean (seq routine)))
 
-(defn has-ended []
-  (= (@state :sequence) []))
+(defn has-ended? [routine]
+  (= routine []))

@@ -2,38 +2,46 @@
   (:require
     [reagent.core :as r]
     [workout.routine :as routine]
-    [workout.timer :as timer]
     [workout.speech :refer [speak!]]
     [clojure.string :as str]))
 
-(def duration 2000)
+(def duration (* 60 1000))
+(def exercise-count 8)
 
-(defn halfway-alert! []
+(defonce routine (r/atom nil))
+
+(defn alert-halfway! []
   (speak! "halfway"))
 
-(defn next-exercise! []
-  (when (not (routine/has-ended))
-    (routine/next-exercise!)
-    (timer/start-timer next-exercise! halfway-alert! duration)))
+(declare do-exercise!)
+
+(defn switch-to-next-exercise! []
+  (when (seq @routine)
+    (swap! routine rest)
+    (do-exercise!)))
+
+(defn do-exercise! []
+  (when-let [exercise (routine/current-exercise @routine)]
+    (speak! (:name exercise))
+    (js/setTimeout alert-halfway! (/ duration 2))
+    (js/setTimeout switch-to-next-exercise! duration)))
 
 (defn start! []
-  (routine/create-routine!)
-  (timer/start-timer next-exercise! halfway-alert! duration))
+  (reset! routine (routine/make-routine {:exercise-count exercise-count}))
+  (do-exercise!))
 
 (defn app-view []
   (cond
-    (routine/has-ended)
+    (routine/has-ended? @routine)
     [:div
      [:div "GOOD JOB"]
      [:button {:on-click #(start!)} "restart"]]
 
-    (routine/has-started)
-    (let [exercise (routine/current-exercise)
-          name (exercise :name)
+    (routine/has-started? @routine)
+    (let [exercise (routine/current-exercise @routine)
           filepath (str "/exercises/" (exercise :filename))]
-      (speak! name)
       [:div
-       [:div name]
+       [:div (exercise :name)]
        (cond
          (str/ends-with? filepath ".mp4")
          [:video
