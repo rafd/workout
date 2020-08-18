@@ -3,52 +3,69 @@
     [reagent.core :as r]
     [workout.routine :as routine]
     [workout.speech :refer [speak!]]
+    [workout.phrases :as phrases]
     [clojure.string :as str]))
 
-(def exercise-duration (* 4 1000))
-(def rest-duration (* 2 1000))
-(def exercise-count 4)
+(def exercise-duration (* 60 1000))
+(def rest-duration (* 10 1000))
+(def exercise-count 10)
 
 (defonce display-subject (r/atom :start))
 (defonce schedule-timeout (atom nil))
+
+(defn interpose-fn [sep-fn coll]
+  (rest (interleave (repeatedly sep-fn) coll)))
 
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
         (map (fn [exercise]
               [[:display exercise]
-               [:say (exercise :name)]
+               [:say (str (phrases/random :transition)
+                          (exercise :name))]
                [:delay  (/ exercise-duration 2)]
-               [:say  "halfway"]
+               [:say (phrases/random :motivation)]
                [:delay  (/ exercise-duration 2)]]) $)
-        (interpose [[:display :rest]
-                    [:say "rest"]
-                    [:delay rest-duration]] $)
+        (interpose-fn (fn []
+                        [[:display :rest]
+                         [:say (phrases/random :rest)]
+                         [:delay rest-duration]]) $)
         (apply concat $)
-        (concat $ [[:display :done]
-                   [:say "Done! Great job!"]])))
+        (concat [[:display :starting]
+                 [:blocking-say (phrases/random :introduction)]]
+                $
+                [[:display :done]
+                 [:say (phrases/random :completion)]])))
 
 (defmulti process-instruction!
-  (fn [[instruction-type _]]
+  (fn [[instruction-type _] _]
     instruction-type))
 
 (defmethod process-instruction! :say
-  [[_ text]]
-  (speak! text))
+  [[_ text] done!]
+  (speak! text)
+  (done!))
+
+(defmethod process-instruction! :blocking-say
+  [[_ text] done!]
+  (speak! text done!))
+
+(defmethod process-instruction! :delay
+  [[_ duration] done!]
+  (reset! schedule-timeout (js/setTimeout done! duration)))
 
 (defmethod process-instruction! :display
-  [[_ subject]]
-  (reset! display-subject subject))
+  [[_ subject] done!]
+  (reset! display-subject subject)
+  (done!))
 
-(defmethod process-instruction! :default [_])
+(defmethod process-instruction! :default
+  [_ done!]
+  (done!))
 
 (defn process-schedule! [schedule]
-  (let [[instruction-type arg :as instruction]  (first schedule)]
-    (process-instruction! instruction)
-    (reset! schedule-timeout (js/setTimeout
-                               #(process-schedule! (rest schedule))
-                               (if (= :delay instruction-type)
-                                 arg
-                                 0)))))
+  (when (seq schedule)
+    (process-instruction! (first schedule)
+                          #(process-schedule! (rest schedule)))))
 
 (defn start! []
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
@@ -63,6 +80,9 @@
   (case @display-subject
     :start
     [:button {:on-click #(start!)} "start"]
+
+    :starting
+    [:div]
 
     :rest
     [:div

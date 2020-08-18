@@ -9,8 +9,21 @@
        (reduce (fn [memo _]
                  (if (empty? (memo :available-exercises))
                    (reduced memo)
-                   (let [previous-exercise-tags (or (:tags (last (memo :routine))) #{})
+                   (let [previous-two-exercise-tags (or (->> (memo :routine)
+                                                             reverse
+                                                             (take 2)
+                                                             (map :tags)
+                                                             (apply set/union))
+                                                        #{})
+                         previous-exercise-tags (or (:tags (last (memo :routine))) #{})
                          next-exercise (or (->> (memo :available-exercises)
+                                                (filter (fn [exercise]
+                                                          (empty? (set/intersection
+                                                                    (exercise :tags)
+                                                                    previous-two-exercise-tags))))
+                                                (shuffle)
+                                                (first))
+                                           (->> (memo :available-exercises)
                                                 (filter (fn [exercise]
                                                           (empty? (set/intersection
                                                                     (exercise :tags)
