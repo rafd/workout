@@ -17,7 +17,6 @@
      "Keep going!"
      "Pump it harder!"
      "Go! go! go!"
-     "Half way there!"
      "Believe in yourself!"
      "You can do it!"
      "Is that all you've got?"
