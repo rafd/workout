@@ -74,6 +74,7 @@
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
+  (speak! "Quitting early? That's bollocks.")
   (reset! display-subject :start))
 
 (defn app-view []
