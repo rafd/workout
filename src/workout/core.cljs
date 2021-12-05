@@ -2,19 +2,40 @@
   (:require
     [reagent.core :as r]
     [workout.routine :as routine]
-    [workout.speech :refer [speak!]]
+    [workout.speech :as speech :refer [speak!]]
     [workout.phrases :as phrases]
     [clojure.string :as str]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 10 1000))
-(def exercise-count 10)
+(def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
 (defonce schedule-timeout (atom nil))
 
+#_(defn interpose-fn [sep-fn coll]
+    (rest (interleave (repeatedly sep-fn) coll)))
+
 (defn interpose-fn [sep-fn coll]
-  (rest (interleave (repeatedly sep-fn) coll)))
+  (->> coll
+       (map-indexed
+        (fn [i item]
+         [item (sep-fn i)]))
+       (apply concat)
+       butlast))
+
+(defn progress-phrase [total]
+  (fn [i]
+    (let [i (inc i)]
+      (cond
+        (= i (dec total))
+        "Last one!"
+        (= i (- total 2))
+        "Two more to go!"
+        (= (int (/ total 2)) i) ;; TODO
+        "Halfway done!"
+        (= i (- total 3))
+        "Almost there."))))
 
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
@@ -22,19 +43,28 @@
               [[:display exercise]
                [:say (str (phrases/random :transition)
                           (exercise :name))]
-               [:delay  (/ exercise-duration 2)]
+               [:delay (/ exercise-duration 2)]
                [:say (phrases/random :motivation)]
-               [:delay  (/ exercise-duration 2)]]) $)
-        (interpose-fn (fn []
+               [:delay (/ exercise-duration 2)]]) $)
+        (interpose-fn (fn [i]
                         [[:display :rest]
                          [:say (phrases/random :rest)]
-                         [:delay rest-duration]]) $)
+                         [:delay rest-duration]
+                         [:blocking-say ((progress-phrase (count exercises)) i)]]) $)
         (apply concat $)
         (concat [[:display :starting]
                  [:blocking-say (phrases/random :introduction)]]
                 $
                 [[:display :done]
                  [:say (phrases/random :completion)]])))
+
+(comment
+  (require 'cljs.pprint)
+  (cljs.pprint/pprint
+   (generate-schedule {:exercise-duration exercise-duration
+                       :rest-duration 2
+                       :exercises (routine/make-routine 6)})))
+
 
 (defmulti process-instruction!
   (fn [[instruction-type _] _]
@@ -68,6 +98,7 @@
                           #(process-schedule! (rest schedule)))))
 
 (defn start! []
+  #_(js/navigator.wakeLock.request "screen")
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
                                          :exercises (routine/make-routine exercise-count)})))
@@ -101,12 +132,8 @@
       [:div
        [:button {:on-click #(force-stop!)} "stop"]
        [:div (exercise :name)]
-       (cond
-         (str/ends-with? filepath ".mp4")
-         [:video
-          {:src filepath
-           :auto-play true
-           :muted true
-           :loop true}]
-         (str/ends-with? filepath ".gif")
-         [:img {:src filepath}])])))
+       [:video
+        {:src filepath
+         :auto-play true
+         :muted true
+         :loop true}]])))
