@@ -3,3 +3,4 @@
 .nrepl-port
 workout.iml
 target
+/resources/public/js
