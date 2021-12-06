@@ -8,10 +8,12 @@
   (config/read
     "config.edn"
     [:map
-     [:http-port integer?]]))
+     [:http-port integer?]
+     [:environment keyword?]]))
 
 (def omni-config
   {:omni/http-port (:http-port config)
+   :omni/environment (:environment config)
    :omni/title "Workout"
    :omni/cljs {:main "workout.core"}})
 
