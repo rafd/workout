@@ -1,10 +1,10 @@
 (ns workout.ui
   (:require
     [reagent.core :as r]
+    [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
     [workout.routine :as routine]
     [workout.speech :as speech :refer [speak!]]
-    [workout.phrases :as phrases]
-    [clojure.string :as str]))
+    [workout.phrases :as phrases]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 10 1000))
@@ -111,18 +111,22 @@
 (defn app-view []
   (case @display-subject
     :start
-    [:button {:on-click #(start!)} "start"]
+    [:<>
+     [emoji-favicon "🤸"]
+     [:button {:on-click #(start!)} "start"]]
 
     :starting
     [:div]
 
     :rest
     [:div
+     [emoji-favicon "🧘"]
      [:button {:on-click #(force-stop!)} "stop"]
      [:div "RESTING"]]
 
     :done
     [:div
+     [emoji-favicon "🛀"]
      [:button {:on-click #(start!)} "restart"]
      [:div "GOOD JOB"]]
 
@@ -130,6 +134,7 @@
     (let [exercise @display-subject
           filepath (str "/exercises/" (exercise :filename))]
       [:div
+       [emoji-favicon "🏋"]
        [:button {:on-click #(force-stop!)} "stop"]
        [:div (exercise :name)]
        [:video
