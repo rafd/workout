@@ -86,6 +86,11 @@
      :filename "marching-glute-bridge.webm"
      :tags #{:abs :legs}}
 
+    {:name "Mage Ender"
+     :tags #{:legs :arms :cardio}}
+    {:name "Side Punches"
+     :tags #{:arms :cardio}}
+
     {:name "Frogger"
      :filename "frogger.webm"
      :tags #{:legs :arms :cardio}}
