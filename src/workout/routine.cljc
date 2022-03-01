@@ -4,7 +4,7 @@
     [reagent.core :as r]
     [workout.exercises :refer [exercises]]))
 
-(def max-stress 3)
+(def max-stress 3.5)
 
 ;; stress is a map of tag -> intensity
 ;; ex. {:arms 3 :abs 2}
@@ -24,8 +24,9 @@
 (defn under-threshold? [stress max-stress]
   (every? (fn [s] (<= s max-stress)) (vals stress)))
 
-(defn take-half [coll]
-  (take (inc (quot (count coll) 2)) coll))
+(defn take-fraction [n coll]
+  (take (Math/max 0 (quot (count coll) n))
+        coll))
 
 (defn make-routine
   [exercise-count]
@@ -46,7 +47,7 @@
                                                             max-stress)))
                                                 (sort-by :intensity)
                                                 reverse
-                                                take-half
+                                                (take-fraction 4)
                                                 shuffle
                                                 first)
                                          (do (println "had to resort to random")
