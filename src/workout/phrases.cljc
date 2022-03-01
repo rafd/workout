@@ -34,8 +34,7 @@
      "The body achieves what the mind believes."
      "Hustle for that muscle."
      "Don't give up!"
-     "How bad do you want it?"
-     "Keep it up!"}
+     "How bad do you want it?"}
 
    :transition
    #{"Now we've got: "
