@@ -38,7 +38,8 @@
        (reduce (fn [memo _]
                  (if (empty? (memo :available-exercises))
                    (reduced memo)
-                   (let [next-exercise (or
+                   (let [next-exercise (or (when (empty? (memo :routine))
+                                            (rand-nth (vec (memo :available-exercises))))
                                            (->> (memo :available-exercises)
                                                 (filter (fn [exercise]
                                                           (under-threshold?
