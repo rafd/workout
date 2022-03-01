@@ -252,6 +252,7 @@
     {:name "Bird Dog Crunch"
      :intensity 1
      :position :floor
+     :two-sided? true
      :filename "bird-dog-crunch.webm"
      :tags #{:abs}}
 
