@@ -188,6 +188,11 @@
      :two-sided? true
      :tags #{:legs}}
 
+    {:name "Leg Raise"
+     :intensity 2
+     :position :floor
+     :tags #{:legs :abs}}
+
     {:name "Chair Dip"
      :intensity 2
      :position :standing
