@@ -11,6 +11,11 @@
      "Let's see how you do today."
      "Starting in 3... 2... 1..."}
 
+   :switch-sides
+   #{"Switch it up!"
+     "Switch sides."
+     "Change it up!"}
+
    :motivation
    #{"Keep it up!"
      "Almost there!"
@@ -30,12 +35,11 @@
      "Hustle for that muscle."
      "Don't give up!"
      "How bad do you want it?"
-     "Keep it up, fatty!"}
+     "Keep it up!"}
 
    :transition
    #{"Now we've got: "
      "Time for: "
-     "Next up: "
      "Now do some: "}
 
    :rest
@@ -46,9 +50,9 @@
 
    :completion
    #{"That's it! Great job!"
-     "... and that's a wrap. See you next time."
+     "That's a wrap. See you next time."
      "That's all for today. Good job!"
-     "...and we're done! That was some good hustle!"
+     "And... we're done! That was some good hustle!"
      "All right, that's it. Hit the showers!"}})
 
 (defn random [type]
