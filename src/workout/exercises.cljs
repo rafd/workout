@@ -69,6 +69,7 @@
     {:name "Split Squats"
      :intensity 2
      :position :standing
+     :two-sided? true
      :tags #{:legs
              :quadriceps}}
 
@@ -95,6 +96,7 @@
     {:name "Side Lunge"
      :intensity 1
      :position :standing
+     :two-sided? true
      :filename "side-lunge.webm"
      :tags #{:legs}}
 
@@ -110,6 +112,7 @@
      :filename "forearm-side-plank-twist.webm"
      :intensity 3
      :position :floor
+     :two-sided? true
      :tags #{:arms
              :abs :gluteus :hips :obliques}}
 
@@ -117,6 +120,7 @@
      :filename "plank-t-rotation.webm"
      :intensity 3
      :position :floor
+     :two-sided? true
      :tags #{:arms
              :abs :gluteus :hips :obliques}}
 
@@ -181,6 +185,7 @@
     {:name "Single Leg Hip Raise"
      :intensity 1
      :position :floor
+     :two-sided? true
      :tags #{:legs}}
 
     {:name "Chair Dip"
