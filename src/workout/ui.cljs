@@ -44,7 +44,10 @@
                [:say (str (phrases/random :transition)
                           (exercise :name))]
                [:delay (/ exercise-duration 2)]
-               [:say (phrases/random :motivation)]
+               [:say
+                (if (:two-sided? exercise)
+                 (phrases/random :switch-sides)
+                 (phrases/random :motivation))]
                [:delay (/ exercise-duration 2)]]) $)
         (interpose-fn (fn [i]
                         [[:display :rest]
@@ -142,4 +145,3 @@
          :auto-play true
          :muted true
          :loop true}]])))
-
