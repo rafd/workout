@@ -127,6 +127,7 @@
     {:name "Side Plank"
      :intensity 2
      :position :floor
+     :two-sided? true
      :tags #{:arms}}
 
     {:name "Plank Ups"
