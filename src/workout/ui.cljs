@@ -7,7 +7,7 @@
     [workout.phrases :as phrases]))
 
 (def exercise-duration (* 60 1000))
-(def rest-duration (* 10 1000))
+(def rest-duration (* 8 1000))
 (def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
@@ -53,7 +53,9 @@
                         [[:display :rest]
                          [:say (phrases/random :rest)]
                          [:delay rest-duration]
-                         [:blocking-say ((progress-phrase (count exercises)) i)]]) $)
+                         [:blocking-say ((progress-phrase (count exercises)) i)]
+                         [:delay 2000]])
+                      $)
         (apply concat $)
         (concat [[:display :starting]
                  [:blocking-say (phrases/random :introduction)]]
