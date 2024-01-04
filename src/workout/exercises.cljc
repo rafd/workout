@@ -3,13 +3,13 @@
 (def exercises
   #{;; cardio
 
-    {:name "Jumping Jacks"
+    #_{:name "Jumping Jacks"
      :intensity 2
      :position :standing
      :filename "jumping-jacks.webm"
      :tags #{:cardio :legs}}
 
-    {:name "Skater Hops"
+    #_{:name "Skater Hops"
      :intensity 2
      :position :standing
      :filename "skater-hops.webm"
@@ -21,7 +21,7 @@
      :filename "high-knees.webm"
      :tags #{:legs :cardio}}
 
-    {:name "Pogo Hops"
+    #_{:name "Pogo Hops"
      :intensity 1
      :position :standing
      :tags #{:legs :cardio}}
@@ -69,7 +69,6 @@
     {:name "Split Squats"
      :intensity 2
      :position :standing
-     :two-sided? true
      :tags #{:legs
              :quadriceps}}
 
@@ -100,7 +99,7 @@
      :filename "side-lunge.webm"
      :tags #{:legs}}
 
-    {:name "Crab Walk"
+    #_{:name "Crab Walk"
      :intensity 1
      :position :standing
      :filename "crab-walk.webm"
@@ -110,7 +109,7 @@
 
     {:name "Forearm Side Plank Twist"
      :filename "forearm-side-plank-twist.webm"
-     :intensity 3
+     :intensity 2
      :position :floor
      :two-sided? true
      :tags #{:arms
@@ -118,9 +117,8 @@
 
     {:name "Plank T Rotation"
      :filename "plank-t-rotation.webm"
-     :intensity 3
+     :intensity 2
      :position :floor
-     :two-sided? true
      :tags #{:arms
              :abs :gluteus :hips :obliques}}
 
@@ -131,7 +129,7 @@
      :tags #{:arms}}
 
     {:name "Plank Ups"
-     :intensity 2
+     :intensity 3
      :position :floor
      :filename "plank-ups.webm"
      :tags #{:arms
