@@ -4,7 +4,8 @@
     [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
     [workout.routine :as routine]
     [workout.speech :as speech :refer [speak!]]
-    [workout.phrases :as phrases]))
+    [workout.phrases :as phrases]
+    [workout.posture :as posture]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 8 1000))
@@ -102,11 +103,17 @@
     (process-instruction! (first schedule)
                           #(process-schedule! (rest schedule)))))
 
-(defn start! []
+(defn start-bodyweight! []
   #_(js/navigator.wakeLock.request "screen")
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
                                          :exercises (routine/make-routine exercise-count)})))
+
+(defn start-posture! []
+  #_(js/navigator.wakeLock.request "screen")
+  (process-schedule! (generate-schedule {:exercise-duration exercise-duration
+                                         :rest-duration rest-duration
+                                         :exercises posture/routine})))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
@@ -118,7 +125,8 @@
     :start
     [:<>
      [emoji-favicon "🤸"]
-     [:button {:on-click #(start!)} "start"]]
+     [:button {:on-click #(start-bodyweight!)} "bodyweight routine"]
+     [:button {:on-click #(start-posture!)} "posture routine"]]
 
     :starting
     [:div]
@@ -132,7 +140,6 @@
     :done
     [:div
      [emoji-favicon "🛀"]
-     [:button {:on-click #(start!)} "restart"]
      [:div "GOOD JOB"]]
 
     ; default
