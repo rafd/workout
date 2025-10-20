@@ -1,6 +1,6 @@
 (defproject workout "0.0.1"
-  :dependencies [[io.bloomventures/omni "0.27.7"]
-                 [io.bloomventures/commons "0.11.4"]]
+  :dependencies [[io.bloomventures/omni "0.34.1"]
+                 [io.bloomventures/commons "0.15.1"]]  
 
   :plugins [[io.bloomventures/omni "0.27.7"]]
 
