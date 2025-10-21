@@ -172,5 +172,6 @@
           {:src filepath
            :auto-play true
            :muted true
-           :loop true}])])))
+           :loop true}]
+         nil)])))
  
