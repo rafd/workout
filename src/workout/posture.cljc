@@ -1,35 +1,26 @@
 (ns workout.posture)
 
+(def door-twist {:name "Door Twist. Elbow against door frame; twist chest open; hand back"
+                 :two-sided? true
+                 :filename "posture-door-chest-twist.webm"})
+
 (def routine
-  [
-    {:name "Open Chest"
-     :intensity 1
-     :position :floor
-     :filename "posture-open-chest-roll.webm"
-     :tags #{:arms :back}}
+  [door-twist
 
-    {:name "Door Twist"
-     :intensity 1
-     :position :standing
-     :filename "posture-door-chest-twist.webm"
-     :tags #{:arms :back}}
+   {:name "Open Chest Roll"
+    :filename "posture-open-chest-roll.webm"}
 
-    {:name "Door Up Arm Stretch"
-     :intensity 1
-     :position :standing
-     :filename "posture-door-arm-up.webm"
-     :tags #{:arms :back}}
+   door-twist
 
-    {:name "Band Pull Aparts"
-     :intensity 1
-     :position :standing
-     :filename "posture-band-pull.webm"
-     :tags #{:arms :back}}
+   {:name "Band Raise. Some tension, thumbs up"
+    :filename "posture-band-up.webm"}
 
-    {:name "Band Raise"
-     :intensity 1
-     :position :standing
-     :filename "posture-band-up.webm"
-     :tags #{:arms :back}}
-  ])
-     
+   door-twist
+
+   {:name "Band Pull Aparts. Thumbs out"
+    :filename "posture-band-pull.webm"}
+
+   {:name "Door Shoulder Stretch. Shoulder against door frame; pinch shoulder blades; raise arm; lower arm"
+    :two-sided? true
+    :filename "posture-door-arm-up.webm"}])
+  
