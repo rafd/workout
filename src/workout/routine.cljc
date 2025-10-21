@@ -1,7 +1,5 @@
 (ns workout.routine
   (:require
-    [clojure.set :as set]
-    [reagent.core :as r]
     [workout.exercises :refer [exercises]]))
 
 (def max-stress 3.5)
