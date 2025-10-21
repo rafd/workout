@@ -109,26 +109,14 @@
     (process-instruction! (first schedule)
                           #(process-schedule! (rest schedule)))))
 
-(defn start! [routine-id]
+(defn start! [routine]
   (when js/navigator.wakeLock
     (-> (js/navigator.wakeLock.request "screen")
         (.catch (fn [err]
                   (js/console.warn "Wake lock request failed:" err)))))
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
-                                         :exercises (case routine-id
-                                                      :body-weight
-                                                      (routine/make-routine bodyweight/exercises exercise-count)
-                                                      :ankle
-                                                      ankle/routine
-                                                      :elbow
-                                                      elbow/routine
-                                                      :knee
-                                                      knee/routine
-                                                      :posture
-                                                      posture/routine
-                                                      :stretch
-                                                      stretch/routine)})))
+                                         :exercises routine})))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
@@ -140,12 +128,12 @@
     :start
     [:<>
      [emoji-favicon "🤸"]
-     [:button {:on-click #(start! :body-weight)} "bodyweight"]
-     [:button {:on-click #(start! :ankle)} "ankle"]
-     [:button {:on-click #(start! :elbow)} "elbow"]
-     [:button {:on-click #(start! :knee)} "knee"]
-     [:button {:on-click #(start! :posture)} "posture"]
-     [:button {:on-click #(start! :stretch)} "stretch"]]
+     (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises exercise-count)]
+                         ["ankle" ankle/routine]
+                         ["elbow" elbow/routine]
+                         ["knee" knee/routine]
+                         ["posture" posture/routine]
+                         ["stretch" stretch/routine]]]
 
     :starting
     [:div]
