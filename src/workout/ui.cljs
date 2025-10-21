@@ -1,16 +1,17 @@
 (ns workout.ui
   (:require
-    [clojure.string :as string]
-    [reagent.core :as r]
-    [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
-    [workout.routine :as routine]
-    [workout.speech :as speech :refer [speak!]]
-    [workout.phrases :as phrases]
-    [workout.exercises.bodyweight :as bodyweight]
-    [workout.routines.ankle :as ankle]
-    [workout.routines.elbow :as elbow]
-    [workout.routines.knee :as knee]
-    [workout.routines.posture :as posture]))
+   [clojure.string :as string]
+   [reagent.core :as r]
+   [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
+   [workout.routine :as routine]
+   [workout.speech :as speech :refer [speak!]]
+   [workout.phrases :as phrases]
+   [workout.exercises.bodyweight :as bodyweight]
+   [workout.routines.ankle :as ankle]
+   [workout.routines.elbow :as elbow]
+   [workout.routines.knee :as knee]
+   [workout.routines.posture :as posture]
+   [workout.routines.stretch :as stretch]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 8 1000))
@@ -125,7 +126,9 @@
                                                       :knee
                                                       knee/routine
                                                       :posture
-                                                      posture/routine)})))
+                                                      posture/routine
+                                                      :stretch
+                                                      stretch/routine)})))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
@@ -137,11 +140,12 @@
     :start
     [:<>
      [emoji-favicon "🤸"]
-     [:button {:on-click #(start! :body-weight)} "bodyweight routine"]
-     [:button {:on-click #(start! :ankle)} "ankle routine"]
-     [:button {:on-click #(start! :elbow)} "elbow routine"]
-     [:button {:on-click #(start! :knee)} "knee routine"]
-     [:button {:on-click #(start! :posture)} "posture routine"]]
+     [:button {:on-click #(start! :body-weight)} "bodyweight"]
+     [:button {:on-click #(start! :ankle)} "ankle"]
+     [:button {:on-click #(start! :elbow)} "elbow"]
+     [:button {:on-click #(start! :knee)} "knee"]
+     [:button {:on-click #(start! :posture)} "posture"]
+     [:button {:on-click #(start! :stretch)} "stretch"]]
 
     :starting
     [:div]
