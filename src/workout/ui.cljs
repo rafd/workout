@@ -9,6 +9,7 @@
     [workout.exercises.bodyweight :as bodyweight]
     [workout.routines.ankle :as ankle]
     [workout.routines.elbow :as elbow]
+    [workout.routines.knee :as knee]
     [workout.routines.posture :as posture]))
 
 (def exercise-duration (* 60 1000))
@@ -121,6 +122,8 @@
                                                       ankle/routine
                                                       :elbow
                                                       elbow/routine
+                                                      :knee
+                                                      knee/routine
                                                       :posture
                                                       posture/routine)})))
 
@@ -137,6 +140,7 @@
      [:button {:on-click #(start! :body-weight)} "bodyweight routine"]
      [:button {:on-click #(start! :ankle)} "ankle routine"]
      [:button {:on-click #(start! :elbow)} "elbow routine"]
+     [:button {:on-click #(start! :knee)} "knee routine"]
      [:button {:on-click #(start! :posture)} "posture routine"]]
 
     :starting
