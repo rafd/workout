@@ -1,4 +1,4 @@
-(ns workout.exercises)
+(ns workout.exercises.bodyweight)
 
 (def exercises
   #{;; cardio

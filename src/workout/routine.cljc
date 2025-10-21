@@ -1,6 +1,4 @@
-(ns workout.routine
-  (:require
-    [workout.exercises :refer [exercises]]))
+(ns workout.routine)
 
 (def max-stress 3.5)
 
@@ -27,7 +25,7 @@
         coll))
 
 (defn make-routine
-  [exercise-count]
+  [exercises exercise-count]
   (->> (range exercise-count)
        ;; as we choose each exercise, keep track of the stress on the various body parts
        ;; add stress based on intensity of each exercise
@@ -61,4 +59,4 @@
           :stress {}})
        :routine))
 
-#_(make-routine 8)
+#_(make-routine workout.routines.bodyweight/exercises 8)
