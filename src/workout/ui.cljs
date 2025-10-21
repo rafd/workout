@@ -134,6 +134,10 @@
                          ["knee" knee/routine]
                          ["posture" posture/routine]
                          ["stretch" stretch/routine]]]
+       ^{:key label}
+       [:button {:on-click #(start! data)
+                 :style {:margin "0.5em"
+                         :padding "1em"}} label])]
 
     :starting
     [:div]
@@ -158,10 +162,12 @@
        [:div (exercise :name)]
        (case (last (string/split filepath #"\."))
          "png"
-         [:img {:src filepath}]
+         [:img {:src filepath
+                :style {:width "100vw"}}]
          "webm"
          [:video
           {:src filepath
+           :style {:width "100vw"}
            :auto-play true
            :muted true
            :loop true}]
