@@ -1,11 +1,13 @@
 (ns workout.ui
   (:require
+    [clojure.string :as string]
     [reagent.core :as r]
     [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
     [workout.routine :as routine]
     [workout.speech :as speech :refer [speak!]]
     [workout.phrases :as phrases]
     [workout.exercises.bodyweight :as bodyweight]
+    [workout.routines.ankle :as ankle]
     [workout.routines.posture :as posture]))
 
 (def exercise-duration (* 60 1000))
@@ -114,6 +116,8 @@
                                          :exercises (case routine-id
                                                       :body-weight
                                                       (routine/make-routine bodyweight/exercises exercise-count)
+                                                      :ankle
+                                                      ankle/routine
                                                       :posture
                                                       posture/routine)})))
 
@@ -128,6 +132,7 @@
     [:<>
      [emoji-favicon "🤸"]
      [:button {:on-click #(start! :body-weight)} "bodyweight routine"]
+     [:button {:on-click #(start! :ankle)} "ankle routine"]
      [:button {:on-click #(start! :posture)} "posture routine"]]
 
     :starting
@@ -151,8 +156,13 @@
        [emoji-favicon "🏋"]
        [:button {:on-click #(force-stop!)} "stop"]
        [:div (exercise :name)]
-       [:video
-        {:src filepath
-         :auto-play true
-         :muted true
-         :loop true}]])))
+       (case (last (string/split filepath #"\."))
+         "png"
+         [:img {:src filepath}]
+         "webm"
+         [:video
+          {:src filepath
+           :auto-play true
+           :muted true
+           :loop true}])])))
+ 
