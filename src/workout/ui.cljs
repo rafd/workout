@@ -5,7 +5,8 @@
     [workout.routine :as routine]
     [workout.speech :as speech :refer [speak!]]
     [workout.phrases :as phrases]
-    [workout.posture :as posture]))
+    [workout.exercises.bodyweight :as bodyweight]
+    [workout.routines.posture :as posture]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 8 1000))
@@ -69,7 +70,7 @@
   (cljs.pprint/pprint
    (generate-schedule {:exercise-duration exercise-duration
                        :rest-duration 2
-                       :exercises (routine/make-routine 6)})))
+                       :exercises (routine/make-routine bodyweight/exercises 6)})))
 
 
 (defmulti process-instruction!
@@ -112,7 +113,7 @@
                                          :rest-duration rest-duration
                                          :exercises (case routine-id
                                                       :body-weight
-                                                      (routine/make-routine exercise-count)
+                                                      (routine/make-routine bodyweight/exercises exercise-count)
                                                       :posture
                                                       posture/routine)})))
 

@@ -1,4 +1,4 @@
-(ns workout.posture)
+(ns workout.routines.posture)
 
 (def door-twist {:name "Door Twist. Elbow against door frame; twist chest open; hand back"
                  :two-sided? true
