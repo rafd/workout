@@ -103,17 +103,18 @@
     (process-instruction! (first schedule)
                           #(process-schedule! (rest schedule)))))
 
-(defn start-bodyweight! []
-  #_(js/navigator.wakeLock.request "screen")
+(defn start! [routine-id]
+  (when js/navigator.wakeLock
+    (-> (js/navigator.wakeLock.request "screen")
+        (.catch (fn [err]
+                  (js/console.warn "Wake lock request failed:" err)))))
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
-                                         :exercises (routine/make-routine exercise-count)})))
-
-(defn start-posture! []
-  #_(js/navigator.wakeLock.request "screen")
-  (process-schedule! (generate-schedule {:exercise-duration exercise-duration
-                                         :rest-duration rest-duration
-                                         :exercises posture/routine})))
+                                         :exercises (case routine-id
+                                                      :body-weight
+                                                      (routine/make-routine exercise-count)
+                                                      :posture
+                                                      posture/routine)})))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
@@ -125,8 +126,8 @@
     :start
     [:<>
      [emoji-favicon "🤸"]
-     [:button {:on-click #(start-bodyweight!)} "bodyweight routine"]
-     [:button {:on-click #(start-posture!)} "posture routine"]]
+     [:button {:on-click #(start! :body-weight)} "bodyweight routine"]
+     [:button {:on-click #(start! :posture)} "posture routine"]]
 
     :starting
     [:div]
