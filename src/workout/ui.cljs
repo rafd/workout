@@ -19,6 +19,23 @@
 
 (defonce display-subject (r/atom :start))
 (defonce schedule-timeout (atom nil))
+(defonce wakelock (atom nil))
+
+(defn request-wakelock! []
+  (when js/navigator.wakeLock
+    (-> (js/navigator.wakeLock.request "screen")
+        (.then (fn [lock]
+                 (reset! wakelock lock)))
+        (.catch (fn [err]
+                  (js/console.warn "Wake lock request failed:" err))))))
+
+(defn release-wakelock! []
+  (when @wakelock
+    (-> (.release @wakelock)
+        (.then (fn []
+                 (reset! wakelock nil)))
+        (.catch (fn [err]
+                  (js/console.warn "Wake lock release failed:" err))))))
 
 #_(defn interpose-fn [sep-fn coll]
     (rest (interleave (repeatedly sep-fn) coll)))
@@ -68,6 +85,8 @@
                  [:blocking-say (phrases/random :introduction)]]
                 $
                 [[:display :done]
+                 [:eval (fn []
+                         (release-wakelock!))]
                  [:say (phrases/random :completion)]])))
 
 (comment
@@ -100,6 +119,11 @@
   (reset! display-subject subject)
   (done!))
 
+(defmethod process-instruction! :eval
+  [[_ f] done!]
+  (f)
+  (done!))
+
 (defmethod process-instruction! :default
   [_ done!]
   (done!))
@@ -110,10 +134,7 @@
                           #(process-schedule! (rest schedule)))))
 
 (defn start! [routine]
-  (when js/navigator.wakeLock
-    (-> (js/navigator.wakeLock.request "screen")
-        (.catch (fn [err]
-                  (js/console.warn "Wake lock request failed:" err)))))
+  (request-wakelock!)
   (process-schedule! (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
                                          :exercises routine})))
@@ -121,56 +142,61 @@
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
   (speak! "Quitting early? That's bollocks.")
+  (release-wakelock!)
   (reset! display-subject :start))
 
 (defn app-view []
-  (case @display-subject
-    :start
-    [:<>
-     [emoji-favicon "🤸"]
-     (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises exercise-count)]
-                         ["ankle" ankle/routine]
-                         ["elbow" elbow/routine]
-                         ["knee" knee/routine]
-                         ["posture" posture/routine]
-                         ["stretch" stretch/routine]]]
-       ^{:key label}
-       [:button {:on-click #(start! data)
-                 :style {:margin "0.5em"
-                         :padding "1em"}} label])]
+  [:<>
+   [:div
+    (if @wakelock
+      [:div "🔒 Screen wake lock active"]
+      [:div "🔓 Screen wake lock inactive"])]
+   (case @display-subject
+     :start
+     [:<>
+      [emoji-favicon "🤸"]
+      (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises exercise-count)]
+                          ["ankle" ankle/routine]
+                          ["elbow" elbow/routine]
+                          ["knee" knee/routine]
+                          ["posture" posture/routine]
+                          ["stretch" stretch/routine]]]
+        ^{:key label}
+        [:button {:on-click #(start! data)
+                  :style {:margin "0.5em"
+                          :padding "1em"}} label])]
 
-    :starting
-    [:div]
+     :starting
+     [:div]
 
-    :rest
-    [:div
-     [emoji-favicon "🧘"]
-     [:button {:on-click #(force-stop!)} "stop"]
-     [:div "RESTING"]]
+     :rest
+     [:div
+      [emoji-favicon "🧘"]
+      [:button {:on-click #(force-stop!)} "stop"]
+      [:div "RESTING"]]
 
-    :done
-    [:div
-     [emoji-favicon "🛀"]
-     [:div "GOOD JOB"]
-     [:button {:on-click #(reset! display-subject :start)} "start over"]]
+     :done
+     [:div
+      [emoji-favicon "🛀"]
+      [:div "GOOD JOB"]
+      [:button {:on-click #(reset! display-subject :start)} "start over"]]
 
     ; default
-    (let [exercise @display-subject
-          filepath (str "/exercises/" (exercise :filename))]
-      [:div
-       [emoji-favicon "🏋"]
-       [:button {:on-click #(force-stop!)} "stop"]
-       [:div (exercise :name)]
-       (case (last (string/split filepath #"\."))
-         "png"
-         [:img {:src filepath
-                :style {:width "100vw"}}]
-         "webm"
-         [:video
-          {:src filepath
-           :style {:width "100vw"}
-           :auto-play true
-           :muted true
-           :loop true}]
-         nil)])))
- 
+     (let [exercise @display-subject
+           filepath (str "/exercises/" (exercise :filename))]
+       [:div
+        [emoji-favicon "🏋"]
+        [:button {:on-click #(force-stop!)} "stop"]
+        [:div (exercise :name)]
+        (case (last (string/split filepath #"\."))
+          "png"
+          [:img {:src filepath
+                 :style {:width "100vw"}}]
+          "webm"
+          [:video
+           {:src filepath
+            :style {:width "100vw"}
+            :auto-play true
+            :muted true
+            :loop true}]
+          nil)]))])
