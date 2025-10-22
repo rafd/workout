@@ -20,7 +20,7 @@
    {:name "Band Pull Aparts. Thumbs out"
     :filename "posture-band-pull.webm"}
 
-   {:name "Door Shoulder Stretch. Shoulder against door frame; pinch shoulder blades; raise arm; lower arm"
+   {:name "Door Shoulder Stretch. Shoulder against door frame; pinch shoulder blades; feet offset; raise and lower arm"
     :two-sided? true
     :filename "posture-door-arm-up.webm"}])
   

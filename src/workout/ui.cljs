@@ -151,7 +151,8 @@
     :done
     [:div
      [emoji-favicon "🛀"]
-     [:div "GOOD JOB"]]
+     [:div "GOOD JOB"]
+     [:button {:on-click #(reset! display-subject :start)} "start over"]]
 
     ; default
     (let [exercise @display-subject
