@@ -10,7 +10,6 @@
     :filename "heel-cord-stretch.png"}
 
    {:name "Knee Swing"
-    :two-sided? true
     :filename "knee-swing.png"}
    
    {:name "Calf Stretch"
@@ -45,7 +44,8 @@
     :two-sided? true
     :filename "towel-scrunch.png"}
    
-   {:name "Single Leg balance"}
+   {:name "Single Leg balance"
+    :two-sided? true}
 
    {:name "One-legged calf raise"
     :two-sided? true}
