@@ -20,6 +20,8 @@
 (defonce display-subject (r/atom :start))
 (defonce schedule-timeout (atom nil))
 (defonce wakelock (atom nil))
+(defonce schedule (atom nil))
+(defonce current-schedule-index (atom nil))
 
 (defn request-wakelock! []
   (when js/navigator.wakeLock
@@ -128,22 +130,33 @@
   [_ done!]
   (done!))
 
-(defn process-schedule! [schedule]
-  (when (seq schedule)
-    (process-instruction! (first schedule)
-                          #(process-schedule! (rest schedule)))))
+(defn process-schedule! []
+  (when (< @current-schedule-index (count @schedule))
+    (process-instruction! (nth @schedule @current-schedule-index)
+                          (fn []
+                            (swap! current-schedule-index inc)
+                            (process-schedule!)))))
 
 (defn start! [routine]
   (request-wakelock!)
-  (process-schedule! (generate-schedule {:exercise-duration exercise-duration
+  (reset! schedule (generate-schedule {:exercise-duration exercise-duration
                                          :rest-duration rest-duration
-                                         :exercises routine})))
+                                             :exercises routine}))
+  (reset! current-schedule-index 0)
+  (process-schedule!))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
   (speak! "Quitting early? That's bollocks.")
   (release-wakelock!)
   (reset! display-subject :start))
+
+(defn skip! []
+  (js/clearTimeout @schedule-timeout)
+  (speak! "Skipping ahead.")
+  ;; need to have logic to skip to next exercise; not just next scuedule (which may be the halfway voice state)
+  (swap! current-schedule-index inc)
+  (process-schedule!))
 
 (defn app-view []
   [:<>
@@ -187,6 +200,7 @@
        [:div
         [emoji-favicon "🏋"]
         [:button {:on-click #(force-stop!)} "stop"]
+        [:button {:on-click #(skip!)} "skip"]
         [:div (exercise :name)]
         (case (last (string/split filepath #"\."))
           "png"
