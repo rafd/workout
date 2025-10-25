@@ -13,12 +13,13 @@
    [workout.state :as state]))
 
 (defn button [opts content]
-  [:button (merge {:tw "px-3 py-2 bg-gray-200 rounded m-2 hover:bg-gray-300 border"}
+  [:button (merge {:tw ["px-3 py-2 bg-gray-200 rounded m-2 hover:bg-gray-300 border"
+                        "dark:bg-gray-700 dark:hover:bg-gray-600"]}
                   opts)
    content])
 
 (defn app-view []
-  [:<>
+  [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh"}
    [:div
     (if @state/wakelock
       [:div "🔒 Screen wake lock active"]
