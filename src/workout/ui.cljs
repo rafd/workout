@@ -71,7 +71,9 @@
           "webm"
           [:video
            {:src filepath
-            :style {:width "100vw"}
+            :style {:width "100vw"
+                    :max-height "100vh"
+                    :object-fit "contain"}
             :auto-play true
             :muted true
             :loop true}]
