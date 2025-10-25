@@ -2,56 +2,56 @@
 
 (def routine
    
-   [{:name "Ankle Alphabet"
-    :filename "ankle-alphabet.png"}
+   [{:exercise/name "Ankle Alphabet"
+    :exercise/media-file "ankle-alphabet.png"}
    
-   {:name "Heel Cord Stretch"
-    :two-sided? true
-    :filename "heel-cord-stretch.png"}
+   {:exercise/name "Heel Cord Stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "heel-cord-stretch.png"}
 
-   {:name "Knee Swing"
-    :filename "knee-swing.png"}
+   {:exercise/name "Knee Swing"
+    :exercise/media-file "knee-swing.png"}
    
-   {:name "Calf Stretch"
-    :two-sided? true
-    :filename "calf-stretch.png"}
+   {:exercise/name "Calf Stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "calf-stretch.png"}
    
-   {:name "Ankle eversion"
-    :two-sided? true
-    :filename "ankle-eversion.png"}
+   {:exercise/name "Ankle eversion"
+    :exercise/two-sided? true
+    :exercise/media-file "ankle-eversion.png"}
    
-   {:name "Ankle opposition (isometric)"
-    :two-sided? true
-    :filename "ankle-opposition.png"}
+   {:exercise/name "Ankle opposition (isometric)"
+    :exercise/two-sided? true
+    :exercise/media-file "ankle-opposition.png"}
    
-   {:name "Resisted ankle inversion. Turn foot inwards"
-    :two-sided? true
-    :filename "resisted-ankle-inversion.png"}
+   {:exercise/name "Resisted ankle inversion. Turn foot inwards"
+    :exercise/two-sided? true
+    :exercise/media-file "resisted-ankle-inversion.png"}
    
-   {:name "Resisted ankle eversion. Turn foot outwards"
-    :two-sided? true
-    :filename "resisted-ankle-eversion.png"}
+   {:exercise/name "Resisted ankle eversion. Turn foot outwards"
+    :exercise/two-sided? true
+    :exercise/media-file "resisted-ankle-eversion.png"}
    
-   {:name "Resisted ankle dorsiflexion. Pull foot upwards"
-    :two-sided? true
-    :filename "resisted-ankle-dorsiflexion.png"}
+   {:exercise/name "Resisted ankle dorsiflexion. Pull foot upwards"
+    :exercise/two-sided? true
+    :exercise/media-file "resisted-ankle-dorsiflexion.png"}
    
-   {:name "Resisted ankle plantar flexion. Point toes down"
-    :two-sided? true
-    :filename "resisted-ankle-plantar-flexion.png"}
+   {:exercise/name "Resisted ankle plantar flexion. Point toes down"
+    :exercise/two-sided? true
+    :exercise/media-file "resisted-ankle-plantar-flexion.png"}
    
-   {:name "Towel scrunch"
-    :two-sided? true
-    :filename "towel-scrunch.png"}
+   {:exercise/name "Towel scrunch"
+    :exercise/two-sided? true
+    :exercise/media-file "towel-scrunch.png"}
    
-   {:name "Single Leg balance"
-    :two-sided? true}
+   {:exercise/name "Single Leg balance"
+    :exercise/two-sided? true}
 
-   {:name "One-legged calf raise"
-    :two-sided? true}
+   {:exercise/name "One-legged calf raise"
+    :exercise/two-sided? true}
    
-   {:name "Step up"
-    :two-sided? true}
+   {:exercise/name "Step up"
+    :exercise/two-sided? true}
    
-   {:name "Walking lunge"}
+   {:exercise/name "Walking lunge"}
 ])

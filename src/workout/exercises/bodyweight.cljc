@@ -3,260 +3,260 @@
 (def exercises
   #{;; cardio
 
-    #_{:name "Jumping Jacks"
-     :intensity 2
-     :position :standing
-     :filename "jumping-jacks.webm"
-     :tags #{:cardio :legs}}
+    #_{:exercise/name "Jumping Jacks"
+       :exercise/intensity 2
+       :exercise/position :position/standing
+       :exercise/media-file "jumping-jacks.webm"
+       :exercise/target-muscles #{:cardio :legs}}
 
-    #_{:name "Skater Hops"
-     :intensity 2
-     :position :standing
-     :filename "skater-hops.webm"
-     :tags #{:cardio :legs}}
+    #_{:exercise/name "Skater Hops"
+       :exercise/intensity 2
+       :exercise/position :position/standing
+       :exercise/media-file "skater-hops.webm"
+       :exercise/target-muscles #{:cardio :legs}}
 
-    {:name "High Knees"
-     :intensity 2
-     :position :standing
-     :filename "high-knees.webm"
-     :tags #{:legs :cardio}}
+    {:exercise/name "High Knees"
+     :exercise/intensity 2
+     :exercise/position :position/standing
+     :exercise/media-file "high-knees.webm"
+     :exercise/target-muscles #{:legs :cardio}}
 
-    #_{:name "Pogo Hops"
-     :intensity 1
-     :position :standing
-     :tags #{:legs :cardio}}
+    #_{:exercise/name "Pogo Hops"
+       :exercise/intensity 1
+       :exercise/position :position/standing
+       :exercise/target-muscles #{:legs :cardio}}
 
-    {:name "Mage Ender"
-     :intensity 1
-     :position :standing
-     :tags #{:legs :arms :cardio}}
+    {:exercise/name "Mage Ender"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/target-muscles #{:legs :arms :cardio}}
 
-    {:name "Side Punches"
-     :intensity 1
-     :position :standing
-     :tags #{:arms :cardio}}
+    {:exercise/name "Side Punches"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/target-muscles #{:arms :cardio}}
 
     ;; murder
 
-    {:name "Squat Jacks"
-     :intensity 3
-     :position :standing
-     :filename "squat-jacks.webm"
-     :tags #{:legs :cardio
-             :quadriceps :gluteus :hips :abs}}
+    {:exercise/name "Squat Jacks"
+     :exercise/intensity 3
+     :exercise/position :position/standing
+     :exercise/media-file "squat-jacks.webm"
+     :exercise/target-muscles #{:legs :cardio
+                                :quadriceps :gluteus :hips :abs}}
 
-    {:name "Burpees"
-     :intensity 3
-     :position :standing
-     :filename "burpees.webm"
-     :tags #{:cardio :legs
-             :abs :erector-spinae}}
+    {:exercise/name "Burpees"
+     :exercise/intensity 3
+     :exercise/position :position/standing
+     :exercise/media-file "burpees.webm"
+     :exercise/target-muscles #{:cardio :legs
+                                :abs :erector-spinae}}
 
-    {:name "Frogger"
-     :intensity 3
-     :position :floor
-     :filename "frogger.webm"
-     :tags #{:legs :arms :cardio}}
+    {:exercise/name "Frogger"
+     :exercise/intensity 3
+     :exercise/position :position/floor
+     :exercise/media-file "frogger.webm"
+     :exercise/target-muscles #{:legs :arms :cardio}}
 
     ;; squats
 
-    {:name "Jump Squats"
-     :intensity 3
-     :position :standing
-     :filename "jump-squats.webm"
-     :tags #{:legs :cardio}}
+    {:exercise/name "Jump Squats"
+     :exercise/intensity 3
+     :exercise/position :position/standing
+     :exercise/media-file "jump-squats.webm"
+     :exercise/target-muscles #{:legs :cardio}}
 
-    {:name "Split Squats"
-     :intensity 2
-     :position :standing
-     :tags #{:legs
-             :quadriceps}}
+    {:exercise/name "Split Squats"
+     :exercise/intensity 2
+     :exercise/position :position/standing
+     :exercise/target-muscles #{:legs
+                                :quadriceps}}
 
-    {:name "Squats"
-     :intensity 1
-     :position :standing
-     :filename "squats.webm"
-     :tags #{:legs
-             :quadriceps :gluteus :hips :abs}}
+    {:exercise/name "Squats"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/media-file "squats.webm"
+     :exercise/target-muscles #{:legs
+                                :quadriceps :gluteus :hips :abs}}
 
-    {:name "Lunges"
-     :intensity 1
-     :position :standing
-     :filename "lunges.webm"
-     :tags #{:legs
-             :quadriceps :gluteus :hamstrings :hips}}
+    {:exercise/name "Lunges"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/media-file "lunges.webm"
+     :exercise/target-muscles #{:legs
+                                :quadriceps :gluteus :hamstrings :hips}}
 
-    {:name "Reverse Lunge"
-     :intensity 1
-     :position :standing
-     :filename "reverse-lunge.webm"
-     :tags #{:legs}}
+    {:exercise/name "Reverse Lunge"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/media-file "reverse-lunge.webm"
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Side Lunge"
-     :intensity 1
-     :position :standing
-     :two-sided? true
-     :filename "side-lunge.webm"
-     :tags #{:legs}}
+    {:exercise/name "Side Lunge"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/two-sided? true
+     :exercise/media-file "side-lunge.webm"
+     :exercise/target-muscles #{:legs}}
 
-    #_{:name "Crab Walk"
-     :intensity 1
-     :position :standing
-     :filename "crab-walk.webm"
-     :tags #{:legs}}
+    #_{:exercise/name "Crab Walk"
+       :exercise/intensity 1
+       :exercise/position :position/standing
+       :exercise/media-file "crab-walk.webm"
+       :exercise/target-muscles #{:legs}}
 
     ;; planks and arms
 
-    {:name "Forearm Side Plank Twist"
-     :filename "forearm-side-plank-twist.webm"
-     :intensity 2
-     :position :floor
-     :two-sided? true
-     :tags #{:arms
-             :abs :gluteus :hips :obliques}}
+    {:exercise/name "Forearm Side Plank Twist"
+     :exercise/media-file "forearm-side-plank-twist.webm"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/two-sided? true
+     :exercise/target-muscles #{:arms
+                                :abs :gluteus :hips :obliques}}
 
-    {:name "Plank T Rotation"
-     :filename "plank-t-rotation.webm"
-     :intensity 2
-     :position :floor
-     :tags #{:arms
-             :abs :gluteus :hips :obliques}}
+    {:exercise/name "Plank T Rotation"
+     :exercise/media-file "plank-t-rotation.webm"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/target-muscles #{:arms
+                                :abs :gluteus :hips :obliques}}
 
-    {:name "Side Plank"
-     :intensity 2
-     :position :floor
-     :two-sided? true
-     :tags #{:arms}}
+    {:exercise/name "Side Plank"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/two-sided? true
+     :exercise/target-muscles #{:arms}}
 
-    {:name "Plank Ups"
-     :intensity 3
-     :position :floor
-     :filename "plank-ups.webm"
-     :tags #{:arms
-             :erector-spinae :abs}}
+    {:exercise/name "Plank Ups"
+     :exercise/intensity 3
+     :exercise/position :position/floor
+     :exercise/media-file "plank-ups.webm"
+     :exercise/target-muscles #{:arms
+                                :erector-spinae :abs}}
 
-    {:name "Plank Taps"
-     :intensity 2
-     :position :floor
-     :filename "plank-taps.webm"
-     :tags #{:arms
-             :erector-spinae :abs}}
+    {:exercise/name "Plank Taps"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/media-file "plank-taps.webm"
+     :exercise/target-muscles #{:arms
+                                :erector-spinae :abs}}
 
-    {:name "Pushups"
-     :intensity 2
-     :position :floor
-     :tags #{:arms
-             :pectorals :triceps}}
+    {:exercise/name "Pushups"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/target-muscles #{:arms
+                                :pectorals :triceps}}
 
-    {:name "Mountain Climber"
-     :intensity 2
-     :position :floor
-     :filename "mountain-climber.webm"
-     :tags #{:abs :arms :legs}}
+    {:exercise/name "Mountain Climber"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/media-file "mountain-climber.webm"
+     :exercise/target-muscles #{:abs :arms :legs}}
 
-    {:name "Wall Pushups"
-     :intensity 0
-     :position :standing
-     :filename "wall-pushups.webm"
-     :tags #{:arms}}
+    {:exercise/name "Wall Pushups"
+     :exercise/intensity 0
+     :exercise/position :position/standing
+     :exercise/media-file "wall-pushups.webm"
+     :exercise/target-muscles #{:arms}}
 
     ;; abs
 
-    {:name "Reach Crunch"
-     :intensity 1
-     :position :floor
-     :tags #{:abs
-             :rectus-abdominis :obliques}}
+    {:exercise/name "Reach Crunch"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/target-muscles #{:abs
+                                :rectus-abdominis :obliques}}
 
-    {:name "Bicycle Crunch"
-     :intensity 2
-     :position :floor
-     :filename "bicycle-crunch.webm"
-     :tags #{:abs :legs}}
+    {:exercise/name "Bicycle Crunch"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/media-file "bicycle-crunch.webm"
+     :exercise/target-muscles #{:abs :legs}}
 
     ;; other
 
-    {:name "Single Leg Toe Touch"
-     :intensity 1
-     :position :standing
-     :tags #{:legs}}
+    {:exercise/name "Single Leg Toe Touch"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Single Leg Hip Raise"
-     :intensity 1
-     :position :floor
-     :two-sided? true
-     :tags #{:legs}}
+    {:exercise/name "Single Leg Hip Raise"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/two-sided? true
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Leg Raise"
-     :intensity 2
-     :position :floor
-     :tags #{:legs :abs}}
+    {:exercise/name "Leg Raise"
+     :exercise/intensity 2
+     :exercise/position :position/floor
+     :exercise/target-muscles #{:legs :abs}}
 
-    {:name "Chair Dip"
-     :intensity 2
-     :position :standing
+    {:exercise/name "Chair Dip"
+     :exercise/intensity 2
+     :exercise/position :position/standing
      :equipment #{:chair}
-     :tags #{:arms}}
+     :exercise/target-muscles #{:arms}}
 
-    {:name "Calf Raise"
-     :intensity 0
-     :position :standing
-     :filename "calf-raise.webm"
-     :tags #{:legs
-             :calves}}
+    {:exercise/name "Calf Raise"
+     :exercise/intensity 0
+     :exercise/position :position/standing
+     :exercise/media-file "calf-raise.webm"
+     :exercise/target-muscles #{:legs
+                                :calves}}
 
-    {:name "Side Leg Raises"
-     :intensity 0
-     :position :standing
-     :filename "side-leg-raises.webm"
-     :tags #{:legs
-             :hips}}
+    {:exercise/name "Side Leg Raises"
+     :exercise/intensity 0
+     :exercise/position :position/standing
+     :exercise/media-file "side-leg-raises.webm"
+     :exercise/target-muscles #{:legs
+                                :hips}}
 
-    {:name "Lateral Leg Raise"
-     :intensity 0
-     :position :floor
-     :filename "lateral-leg-raise.webm"
-     :tags #{:legs}}
+    {:exercise/name "Lateral Leg Raise"
+     :exercise/intensity 0
+     :exercise/position :position/floor
+     :exercise/media-file "lateral-leg-raise.webm"
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Knee to Chest"
-     :intensity 1
-     :position :floor
-     :filename "knee-to-chest.webm"
-     :tags #{:abs}}
+    {:exercise/name "Knee to Chest"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/media-file "knee-to-chest.webm"
+     :exercise/target-muscles #{:abs}}
 
-    {:name "Knee to Elbow"
-     :intensity 1
-     :position :standing
-     :filename "knee-to-elbow.webm"
-     :tags #{:abs}}
+    {:exercise/name "Knee to Elbow"
+     :exercise/intensity 1
+     :exercise/position :position/standing
+     :exercise/media-file "knee-to-elbow.webm"
+     :exercise/target-muscles #{:abs}}
 
-    {:name "Wall Sit"
-     :intensity 2
-     :position :standing
-     :filename "wall-sit.webm"
-     :tags #{:legs}}
+    {:exercise/name "Wall Sit"
+     :exercise/intensity 2
+     :exercise/position :position/standing
+     :exercise/media-file "wall-sit.webm"
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Marching Glute Bridge"
-     :intensity 1
-     :position :floor
-     :filename "marching-glute-bridge.webm"
-     :tags #{:abs :legs}}
+    {:exercise/name "Marching Glute Bridge"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/media-file "marching-glute-bridge.webm"
+     :exercise/target-muscles #{:abs :legs}}
 
-    {:name "Fire Hydrants"
-     :intensity 1
-     :position :floor
-     :filename "fire-hydrants.webm"
-     :tags #{:legs}}
+    {:exercise/name "Fire Hydrants"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/media-file "fire-hydrants.webm"
+     :exercise/target-muscles #{:legs}}
 
-    {:name "Bird Dog Crunch"
-     :intensity 1
-     :position :floor
-     :two-sided? true
-     :filename "bird-dog-crunch.webm"
-     :tags #{:abs}}
+    {:exercise/name "Bird Dog Crunch"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/two-sided? true
+     :exercise/media-file "bird-dog-crunch.webm"
+     :exercise/target-muscles #{:abs}}
 
-    {:name "Dead Bug"
-     :intensity 1
-     :position :floor
-     :filename "dead-bug.webm"
-     :tags #{:arms :legs}}})
+    {:exercise/name "Dead Bug"
+     :exercise/intensity 1
+     :exercise/position :position/floor
+     :exercise/media-file "dead-bug.webm"
+     :exercise/target-muscles #{:arms :legs}}})

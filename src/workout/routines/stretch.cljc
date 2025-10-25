@@ -2,56 +2,56 @@
 
 (def routine
 
-  [{:name "Neck side stretch"
-    :two-sided? true}
+  [{:exercise/name "Neck side stretch"
+    :exercise/two-sided? true}
 
-   {:name "Shoulder rolls"
-    :two-sided? true}
+   {:exercise/name "Shoulder rolls"
+    :exercise/two-sided? true}
 
-   {:name "Cross-body arm stretch"
-    :two-sided? true}
+   {:exercise/name "Cross-body arm stretch"
+    :exercise/two-sided? true}
 
-   {:name "Triceps overhead stretch"
-    :two-sided? true
-    :filename "triceps-and-lat-stretch.png"}
+   {:exercise/name "Triceps overhead stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "triceps-and-lat-stretch.png"}
 
-   {:name "Chest opener"
-    :filename "chest-opener.png"}
+   {:exercise/name "Chest opener"
+    :exercise/media-file "chest-opener.png"}
 
-   {:name "Cat cow"
-    :filename "cat-cow.png"}
+   {:exercise/name "Cat cow"
+    :exercise/media-file "cat-cow.png"}
 
-   {:name "Child's pose"}
+   {:exercise/name "Child's pose"}
 
-   {:name "Overhead side reach"
-    :two-sided? true
-    :filename "overhead-side-reach.png"}
+   {:exercise/name "Overhead side reach"
+    :exercise/two-sided? true
+    :exercise/media-file "overhead-side-reach.png"}
 
-   {:name "Cobra"
-    :filename "cobra-stretch.png"}
+   {:exercise/name "Cobra"
+    :exercise/media-file "cobra-stretch.png"}
    
-   {:name "Figure four stretch"
-    :two-sided? true
-    :filename "figure-4.webm"}
+   {:exercise/name "Figure four stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "figure-4.webm"}
 
-   {:name "Hip flexor lunge stretch"
-    :two-sided? true
-    :filename "hip-flexor-lunge-stretch.png"}
+   {:exercise/name "Hip flexor lunge stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "hip-flexor-lunge-stretch.png"}
 
-   {:name "Hamstring stretch"
-    :two-sided? true
-    :filename "hamstring-stretch.png"}
+   {:exercise/name "Hamstring stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "hamstring-stretch.png"}
 
-   {:name "Quad stretch"
-    :two-sided? true
-    :filename "quad-stretch.png"}
+   {:exercise/name "Quad stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "quad-stretch.png"}
 
-   {:name "Calf Stretch"
-    :two-sided? true
-    :filename "calf-stretch.png"}
+   {:exercise/name "Calf Stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "calf-stretch.png"}
 
-   {:name "Spinal twist"
-    :two-sided? true
-    :filename "spinal-twist.png"}
+   {:exercise/name "Spinal twist"
+    :exercise/two-sided? true
+    :exercise/media-file "spinal-twist.png"}
 
-   {:name "Ankle circles and toe flexes"}])
+   {:exercise/name "Ankle circles and toe flexes"}])

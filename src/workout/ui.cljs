@@ -69,12 +69,12 @@
               [[:delay (* 0.25 rest-duration)]
                [:display exercise]
                [:say (str (phrases/random :transition)
-                          (exercise :name))]
+                          (exercise :exercise/name))]
                [:delay (* 0.75 rest-duration)]
                [:blocking-say (phrases/random :start)]
                [:delay (/ exercise-duration 2)]
                [:say
-                (if (:two-sided? exercise)
+                (if (:exercise/two-sided? exercise)
                  (phrases/random :switch-sides)
                  (phrases/random :motivation))]
                [:delay (/ exercise-duration 2)]]) $)
@@ -197,12 +197,12 @@
 
     ; default
      (let [exercise @display-subject
-           filepath (str "/exercises/" (exercise :filename))]
+           filepath (str "/exercises/" (exercise :exercise/media-file))]
        [:div
         [emoji-favicon "🏋"]
         [:button {:on-click #(force-stop!)} "stop"]
         [:button {:on-click #(skip!)} "skip"]
-        [:div (exercise :name)]
+        [:div (exercise :exercise/name)]
         (case (last (string/split filepath #"\."))
           "png"
           [:img {:src filepath

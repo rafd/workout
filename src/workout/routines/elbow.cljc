@@ -2,34 +2,34 @@
 
 (def routine
   [
-   {:name "Triceps and lat stretch"
-    :two-sided? true
-    :filename "triceps-and-lat-stretch.png"}
+   {:exercise/name "Triceps and lat stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "triceps-and-lat-stretch.png"}
 
-   {:name "Forearm flexor stretch"
-    :two-sided? true
-    :filename "forearm-flexor-stretch.png"}
+   {:exercise/name "Forearm flexor stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "forearm-flexor-stretch.png"}
 
-   {:name "Forearm extensor stretch"
-    :two-sided? true
-    :filename "forearm-extensor-stretch.png"}
+   {:exercise/name "Forearm extensor stretch"
+    :exercise/two-sided? true
+    :exercise/media-file "forearm-extensor-stretch.png"}
 
-   {:name "Scapular circles / shoulder rolls"
-    :two-sided? true}
+   {:exercise/name "Scapular circles / shoulder rolls"
+    :exercise/two-sided? true}
 
-   {:name "Triceps eccentric control"
-    :two-sided? true
-    :filename "triceps-eccentric-control.webm"}
+   {:exercise/name "Triceps eccentric control"
+    :exercise/two-sided? true
+    :exercise/media-file "triceps-eccentric-control.webm"}
 
-   {:name "Pronation-supination drill"
-    :two-sided? true
-    :filename "pronation-supination-drill.webm"}
+   {:exercise/name "Pronation-supination drill"
+    :exercise/two-sided? true
+    :exercise/media-file "pronation-supination-drill.webm"}
 
-   {:name "External rotation (band or cable)"
-    :two-sided? true
-    :filename "external-rotation.webm"}
+   {:exercise/name "External rotation (band or cable)"
+    :exercise/two-sided? true
+    :exercise/media-file "external-rotation.webm"}
 
-   {:name "Quadruped rocking. Elbows slightly bent"
-    :two-sided? true
-    :filename "quadruped-rocking.webm"}
+   {:exercise/name "Quadruped rocking. Elbows slightly bent"
+    :exercise/two-sided? true
+    :exercise/media-file "quadruped-rocking.webm"}
    ])
