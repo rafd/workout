@@ -22,8 +22,6 @@
    {:exercise/name "Step ups"
     :exercise/two-sided? true}
 
-   {:exercise/name "Glute bridge"
-    :exercise/media-file "glute-bridge.webm"}
+   "Glute bridge"
 
-   {:exercise/name "Monster walk or Side-Lying Leg Raises"
-    :exercise/media-file "monster-walk.webm"}])
+   {:exercise/name "Side-Lying Leg Raises"}])

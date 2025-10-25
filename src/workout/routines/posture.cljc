@@ -17,8 +17,7 @@
 
    door-twist
 
-   {:exercise/name "Band Pull Aparts. Thumbs out"
-    :exercise/media-file "posture-band-pull.webm"}
+   "Band pull aparts"
 
    {:exercise/name "Door Shoulder Stretch. Shoulder against door frame; pinch shoulder blades; feet offset; raise and lower arm"
     :exercise/two-sided? true
