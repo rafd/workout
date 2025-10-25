@@ -150,7 +150,8 @@
                                        :exercises (->> routine
                                                        (map (fn [item]
                                                               (if (string? item)
-                                                                (exercises/by-name item)
+                                                                (or (exercises/by-name item) 
+                                                                    {:exercise/name item})
                                                                 item))))}))
   (reset! current-schedule-index 0)
   (process-schedule!))
