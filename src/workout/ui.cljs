@@ -66,24 +66,21 @@
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
         (map (fn [exercise]
-               (if (:exercise/self-paced? exercise)
-                 [[:display exercise]
-                  [:say (str (phrases/random :transition)
-                             (exercise :exercise/name))]
-                  [:say "Go at your own pace and hit next when you're done."]
-                  [:delay 99999999999]]
-                 [[:delay (* 0.25 rest-duration)]
-                  [:display exercise]
-                  [:say (str (phrases/random :transition)
-                             (exercise :exercise/name))]
-                  [:delay (* 0.75 rest-duration)]
-                  [:blocking-say (phrases/random :start)]
-                  [:delay (/ exercise-duration 2)]
-                  [:say
-                   (if (:exercise/two-sided? exercise)
-                     (phrases/random :switch-sides)
-                     (phrases/random :motivation))]
-                  [:delay (/ exercise-duration 2)]])) $)
+               (concat [[:delay (* 0.25 rest-duration)]
+                        [:display exercise]
+                        [:say (str (phrases/random :transition)
+                                   (exercise :exercise/name))]]
+                       (if (:exercise/self-paced? exercise)
+                         [[:say "Go at your own pace"]
+                          [:delay 99999999999]]
+                         [[:delay (* 0.75 rest-duration)]
+                          [:blocking-say (phrases/random :start)]
+                          [:delay (/ exercise-duration 2)]
+                          [:say
+                           (if (:exercise/two-sided? exercise)
+                             (phrases/random :switch-sides)
+                             (phrases/random :motivation))]
+                          [:delay (/ exercise-duration 2)]]))) $)
         (interpose-fn (fn [i]
                         [[:blocking-say (phrases/random :rest)]
                          [:display :rest]
