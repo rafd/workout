@@ -3,6 +3,7 @@
 (def routine
    
    [{:exercise/name "Ankle Alphabet"
+     :exercise/self-paced? true
     :exercise/media-file "ankle-alphabet.png"}
    
    {:exercise/name "Heel Cord Stretch"

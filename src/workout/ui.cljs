@@ -66,18 +66,24 @@
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
         (map (fn [exercise]
-              [[:delay (* 0.25 rest-duration)]
-               [:display exercise]
-               [:say (str (phrases/random :transition)
-                          (exercise :exercise/name))]
-               [:delay (* 0.75 rest-duration)]
-               [:blocking-say (phrases/random :start)]
-               [:delay (/ exercise-duration 2)]
-               [:say
-                (if (:exercise/two-sided? exercise)
-                 (phrases/random :switch-sides)
-                 (phrases/random :motivation))]
-               [:delay (/ exercise-duration 2)]]) $)
+               (if (:exercise/self-paced? exercise)
+                 [[:display exercise]
+                  [:say (str (phrases/random :transition)
+                             (exercise :exercise/name))]
+                  [:say "Go at your own pace and hit next when you're done."]
+                  [:delay 99999999999]]
+                 [[:delay (* 0.25 rest-duration)]
+                  [:display exercise]
+                  [:say (str (phrases/random :transition)
+                             (exercise :exercise/name))]
+                  [:delay (* 0.75 rest-duration)]
+                  [:blocking-say (phrases/random :start)]
+                  [:delay (/ exercise-duration 2)]
+                  [:say
+                   (if (:exercise/two-sided? exercise)
+                     (phrases/random :switch-sides)
+                     (phrases/random :motivation))]
+                  [:delay (/ exercise-duration 2)]])) $)
         (interpose-fn (fn [i]
                         [[:blocking-say (phrases/random :rest)]
                          [:display :rest]
@@ -154,7 +160,7 @@
 
 (defn skip! []
   (js/clearTimeout @schedule-timeout)
-  (speak! "Skipping ahead.")
+  (speak! "Next exercise.")
   ;; need to have logic to skip to next exercise; not just next scuedule (which may be the halfway voice state)
   (swap! current-schedule-index inc)
   (process-schedule!))
@@ -201,7 +207,7 @@
        [:div
         [emoji-favicon "🏋"]
         [:button {:on-click #(force-stop!)} "stop"]
-        [:button {:on-click #(skip!)} "skip"]
+        [:button {:on-click #(skip!)} "next"]
         [:div (exercise :exercise/name)]
         (case (last (string/split filepath #"\."))
           "png"
