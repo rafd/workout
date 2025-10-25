@@ -5,8 +5,8 @@
    [workout.phrases :as phrases]
    [workout.exercises.all :as exercises]))
 
-(def exercise-duration (* 60 1000))
-(def rest-duration (* 8 1000))
+(def exercise-duration (r/atom (* 60 1000)))
+(def rest-duration (r/atom (* 8 1000)))
 (def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
@@ -127,8 +127,8 @@
 
 (defn start! [routine]
   (request-wakelock!)
-  (reset! schedule (generate-schedule {:exercise-duration exercise-duration
-                                       :rest-duration rest-duration
+  (reset! schedule (generate-schedule {:exercise-duration @exercise-duration
+                                       :rest-duration @rest-duration
                                        :exercises (->> routine
                                                        (map (fn [item]
                                                               (if (string? item)

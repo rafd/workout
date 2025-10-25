@@ -18,16 +18,29 @@
                   opts)
    content])
 
+(defn input [opts]
+  [:input (merge {:tw ["dark:bg-gray-700 dark:text-white border rounded px-2 py-1"]}
+                 opts)])
+
 (defn app-view []
   [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh"}
-   [:div
-    (if @state/wakelock
-      [:div "🔒 Screen wake lock active"]
-      [:div "🔓 Screen wake lock inactive"])]
    (case @state/display-subject
      :start
      [:<>
       [emoji-favicon "🤸"]
+      [:form
+       [:label 
+        [:div "Exercise duration (seconds):"]
+        [input {:type "number"
+                :min 1
+                :value (/ @state/exercise-duration 1000)
+                :on-change #(reset! state/exercise-duration (* 1000 (js/parseInt (.. % -target -value))))}]]
+       [:label
+        [:div "Rest duration (seconds):"]
+        [input {:type "number"
+                :min 1
+                :value (/ @state/rest-duration 1000)
+                :on-change #(reset! state/rest-duration (* 1000 (js/parseInt (.. % -target -value))))}]]]
       (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises state/exercise-count)]
                           ["ankle" ankle/routine]
                           ["elbow" elbow/routine]
