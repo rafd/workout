@@ -1,4 +1,4 @@
-(ns workout.core ^:figwheel-hooks
+(ns ^:figwheel-hooks workout.core 
   (:require
     [bloom.omni.reagent :as omni]
     [workout.ui :as ui]))
