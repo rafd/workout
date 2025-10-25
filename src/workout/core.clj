@@ -14,6 +14,7 @@
 (def omni-config
   {:omni/http-port (:http-port config)
    :omni/environment (:environment config)
+   :omni/css {:tailwind? true}
    :omni/title "Workout"
    :omni/cljs {:main "workout.core"}})
 

@@ -169,6 +169,11 @@
   (swap! current-schedule-index inc)
   (process-schedule!))
 
+(defn button [opts content]
+  [:button (merge {:tw "px-3 py-2 bg-gray-200 rounded m-2 hover:bg-gray-300 border"}
+                  opts)
+   content])
+
 (defn app-view []
   [:<>
    [:div
@@ -187,9 +192,7 @@
                           ["stretch" stretch/routine]
                           ["strength" strength/routine]]]
         ^{:key label}
-        [:button {:on-click #(start! data)
-                  :style {:margin "0.5em"
-                          :padding "1em"}} label])]
+        [button {:on-click #(start! data)} label])]
 
      :starting
      [:div]
@@ -197,14 +200,14 @@
      :rest
      [:div
       [emoji-favicon "🧘"]
-      [:button {:on-click #(force-stop!)} "stop"]
+      [button {:on-click #(force-stop!)} "stop"]
       [:div "RESTING"]]
 
      :done
      [:div
       [emoji-favicon "🛀"]
       [:div "GOOD JOB"]
-      [:button {:on-click #(reset! display-subject :start)} "start over"]]
+      [button {:on-click #(reset! display-subject :start)} "start over"]]
 
      ; default
      (let [exercise @display-subject
@@ -212,8 +215,8 @@
                         (str "/exercises/" (:exercise/media-file exercise)))]
        [:div
         [emoji-favicon "🏋"]
-        [:button {:on-click #(force-stop!)} "stop"]
-        [:button {:on-click #(skip!)} "next"]
+        [button {:on-click #(force-stop!)} "stop"]
+        [button {:on-click #(skip!)} "next"]
         [:div (exercise :exercise/name)]
         (case (last (string/split filepath #"\."))
           ("png" "gif")
