@@ -2,7 +2,7 @@
   :dependencies [[io.bloomventures/omni "0.34.1"]
                  [io.bloomventures/commons "0.15.1"]]  
 
-  :plugins [[io.bloomventures/omni "0.27.7"]]
+  :plugins [[io.bloomventures/omni "0.34.1"]]
 
   :main workout.core
 
