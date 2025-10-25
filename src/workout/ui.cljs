@@ -6,12 +6,14 @@
    [workout.routine :as routine]
    [workout.speech :as speech :refer [speak!]]
    [workout.phrases :as phrases]
+   [workout.exercises.all :as exercises]
    [workout.exercises.bodyweight :as bodyweight]
    [workout.routines.ankle :as ankle]
    [workout.routines.elbow :as elbow]
    [workout.routines.knee :as knee]
    [workout.routines.posture :as posture]
-   [workout.routines.stretch :as stretch]))
+   [workout.routines.stretch :as stretch]
+   [workout.routines.strength :as strength]))
 
 (def exercise-duration (* 60 1000))
 (def rest-duration (* 8 1000))
@@ -144,8 +146,12 @@
 (defn start! [routine]
   (request-wakelock!)
   (reset! schedule (generate-schedule {:exercise-duration exercise-duration
-                                         :rest-duration rest-duration
-                                             :exercises routine}))
+                                       :rest-duration rest-duration
+                                       :exercises (->> routine
+                                                       (map (fn [item]
+                                                              (if (string? item)
+                                                                (exercises/by-name item)
+                                                                item))))}))
   (reset! current-schedule-index 0)
   (process-schedule!))
 
@@ -177,7 +183,8 @@
                           ["elbow" elbow/routine]
                           ["knee" knee/routine]
                           ["posture" posture/routine]
-                          ["stretch" stretch/routine]]]
+                          ["stretch" stretch/routine]
+                          ["strength" strength/routine]]]
         ^{:key label}
         [:button {:on-click #(start! data)
                   :style {:margin "0.5em"
@@ -198,18 +205,21 @@
       [:div "GOOD JOB"]
       [:button {:on-click #(reset! display-subject :start)} "start over"]]
 
-    ; default
+     ; default
      (let [exercise @display-subject
-           filepath (str "/exercises/" (exercise :exercise/media-file))]
+           filepath (or (:exercise/media-url exercise)
+                        (str "/exercises/" (:exercise/media-file exercise)))]
        [:div
         [emoji-favicon "🏋"]
         [:button {:on-click #(force-stop!)} "stop"]
         [:button {:on-click #(skip!)} "next"]
         [:div (exercise :exercise/name)]
         (case (last (string/split filepath #"\."))
-          "png"
+          ("png" "gif")
           [:img {:src filepath
-                 :style {:width "100vw"}}]
+                 :style {:width "100vw"
+                         :max-height "100vh"
+                         :object-fit "contain"}}]
           "webm"
           [:video
            {:src filepath
