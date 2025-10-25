@@ -37,9 +37,19 @@
      "How bad do you want it?"}
 
    :transition
-   #{"Now we've got: "
-     "Time for: "
-     "Now do some: "}
+   #{"Prepare for: "
+     "Get ready for: "
+     "Next up: "
+     "Coming up: "
+     "Your next exercise is: "}
+   
+   :start
+   #{"Start!"
+     "Go!"
+     "Begin!"
+     "Let's do this!"
+     "Get moving!"
+     "Let's go!"}
 
    :rest
    #{"Take a breather."

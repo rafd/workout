@@ -66,9 +66,12 @@
 (defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
   (as-> exercises $
         (map (fn [exercise]
-              [[:display exercise]
+              [[:delay (* 0.25 rest-duration)]
+               [:display exercise]
                [:say (str (phrases/random :transition)
                           (exercise :name))]
+               [:delay (* 0.75 rest-duration)]
+               [:blocking-say (phrases/random :start)]
                [:delay (/ exercise-duration 2)]
                [:say
                 (if (:two-sided? exercise)
@@ -76,11 +79,9 @@
                  (phrases/random :motivation))]
                [:delay (/ exercise-duration 2)]]) $)
         (interpose-fn (fn [i]
-                        [[:display :rest]
-                         [:say (phrases/random :rest)]
-                         [:delay rest-duration]
-                         [:blocking-say ((progress-phrase (count exercises)) i)]
-                         [:delay 2000]])
+                        [[:blocking-say (phrases/random :rest)]
+                         [:display :rest]
+                         [:blocking-say ((progress-phrase (count exercises)) i)]])
                       $)
         (apply concat $)
         (concat [[:display :starting]
