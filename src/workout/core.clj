@@ -25,3 +25,5 @@
 
 (defn -main []
   (start!))
+
+#_(start!)
