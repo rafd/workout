@@ -70,11 +70,13 @@
      (let [exercise @state/display-subject
            filepath (or (:exercise/media-url exercise)
                         (str "/exercises/" (:exercise/media-file exercise)))]
-       [:div
+       [:div {:tw "flex flex-col items-center"}
         [emoji-favicon "🏋"]
-        [button {:on-click #(state/force-stop!)} "stop"]
-        [button {:on-click #(state/skip!)} "next"]
-        [:div (exercise :exercise/name)]
+        [:div
+         [button {:on-click #(state/force-stop!)} "stop"]
+         [button {:on-click #(state/skip!)} "next"]]
+        [:div {:tw "text-4xl font-bold"} (:exercise/name exercise)]
+        [:div (:exercise/instructions exercise)]
         (case (last (string/split filepath #"\."))
           ("png" "gif")
           [:img {:src filepath
