@@ -28,7 +28,8 @@
    (doall
     (for [exercise @state/current-routine]
       ^{:key (:exercise/name exercise)}
-      [:div {:tw ["whitespace-nowrap"
+      [:div {:on-click #(state/jump-to-exercise! exercise)
+             :tw ["whitespace-nowrap"
                   (when (= exercise @state/display-subject)
                     "font-bold text-yellow-500")]}
        (:exercise/name exercise)]))])

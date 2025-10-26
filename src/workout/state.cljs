@@ -158,3 +158,14 @@
   ;; need to have logic to skip to next exercise; not just next scuedule (which may be the halfway voice state)
   (swap! current-schedule-index inc)
   (process-schedule!))
+
+(defn jump-to-exercise! [exercise]
+  (js/clearTimeout @schedule-timeout)
+  (let [index (->> @schedule
+                   (map-indexed vector)
+                   (some (fn [[index [instruction item]]]
+                           (when (and (= :display instruction)
+                                      (= exercise item))
+                             index))))]
+    (reset! current-schedule-index index)
+    (process-schedule!)))
