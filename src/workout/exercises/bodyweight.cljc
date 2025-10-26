@@ -215,7 +215,6 @@
     {:exercise/name "Lateral Leg Raise"
      :exercise/intensity 0
      :exercise/position :position/floor
-     :exercise/media-file "lateral-leg-raise.webm"
      :exercise/target-muscles #{:legs}}
 
     {:exercise/name "Knee to Chest"

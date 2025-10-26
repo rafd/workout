@@ -21,9 +21,13 @@
      :exercise/self-paced? true}
     
     {:exercise/name "Deadlift"
-     :exercise/self-paced? true
-     :exercise/media-url "https://static.exercisedb.dev/media/ila4NZS.gif"}
+     :exercise/self-paced? true}
         
     {:exercise/name "Paloff press"
      :exercise/media-file "paloff.png"}
+    
+    {:exercise/name "Door Twist"
+     :exercise/two-sided? true
+     :exercise/instructions "Elbow against door frame; twist chest open; hand back"
+     :exercise/media-file "posture-door-chest-twist.webm"}
   })
