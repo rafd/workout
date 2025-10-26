@@ -55,8 +55,8 @@
         (= i (- total 3))
         "Almost there."))))
 
-(defn generate-schedule [{:keys [exercise-duration rest-duration exercises]}]
-  (as-> exercises $
+(defn generate-schedule [{:keys [exercise-duration rest-duration routine]}]
+  (as-> routine $
     (map (fn [exercise]
            (concat [[:delay (* 0.25 rest-duration)]
                     [:display exercise]
@@ -76,7 +76,7 @@
     (interpose-fn (fn [i]
                     [[:blocking-say (phrases/random :rest)]
                      [:display :rest]
-                     [:blocking-say ((progress-phrase (count exercises)) i)]])
+                     [:blocking-say ((progress-phrase (count routine)) i)]])
                   $)
     (apply concat $)
     (concat [[:display :starting]
@@ -127,14 +127,17 @@
 
 (defn start! [routine]
   (request-wakelock!)
-  (reset! schedule (generate-schedule {:exercise-duration @exercise-duration
-                                       :rest-duration @rest-duration
-                                       :exercises (->> routine
-                                                       (map (fn [item]
-                                                              (if (string? item)
-                                                                (or (exercises/by-name item)
-                                                                    {:exercise/name item})
-                                                                item))))}))
+  (let [routine (->> routine
+                     ;; routine may consist of exercise names or exercise maps
+                     ;; normalize to maps
+                     (map (fn [item]
+                            (if (string? item)
+                              (or (exercises/by-name item)
+                                  {:exercise/name item})
+                              item))))]
+    (reset! schedule (generate-schedule {:exercise-duration @exercise-duration
+                                         :rest-duration @rest-duration
+                                         :routine routine})))
   (reset! current-schedule-index 0)
   (process-schedule!))
 
