@@ -3,14 +3,14 @@
    [reagent.core :as r]
    [workout.speech :as speech :refer [speak!]]
    [workout.phrases :as phrases]
-   [workout.exercises.all :as exercises]))
+   [workout.exercises.all :as exercises]
+   [workout.timer :as timer]))
 
 (def exercise-duration (r/atom (* 60 1000)))
 (def rest-duration (r/atom (* 8 1000)))
 (def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
-(defonce schedule-timeout (atom nil))
 (defonce wakelock (atom nil))
 (defonce schedule (atom nil))
 (defonce current-schedule-index (atom nil))
@@ -18,9 +18,7 @@
 (defonce paused? (r/atom false))
 
 (defn clear-timeout! []
-  (when @schedule-timeout
-    (js/clearTimeout @schedule-timeout)
-    (reset! schedule-timeout nil)))
+  (timer/clear!))
 
 (defn request-wakelock! []
   (when js/navigator.wakeLock
@@ -111,7 +109,7 @@
 
 (defmethod process-instruction! :delay
   [[_ duration] done!]
-  (reset! schedule-timeout (js/setTimeout done! duration)))
+  (timer/set! done! duration))
 
 (defmethod process-instruction! :display
   [[_ subject] done!]

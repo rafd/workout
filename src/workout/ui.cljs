@@ -1,7 +1,9 @@
 (ns workout.ui
   (:require
+   [reagent.core :as r]
    [clojure.string :as string]
    [bloom.commons.ui.emoji-favicon :refer [emoji-favicon]]
+   [workout.ui.border :as border]
    [workout.routine :as routine]
    [workout.exercises.bodyweight :as bodyweight]
    [workout.routines.ankle :as ankle]
@@ -23,7 +25,7 @@
                  opts)])
 
 (defn routine-view []
-  [:div {:tw "fixed bottom-0 left-0 p-2"
+  [:div {:tw "fixed bottom-0 left-0 p-3"
          :style {:background "#1f2937b0"}}
    (doall
     (for [exercise @state/current-routine]
@@ -43,33 +45,38 @@
    [button {:on-click #(state/force-stop!)} "stop"]])
 
 (defn app-view []
-  [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh"}
+  [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh py-4"}
+   [border/animated-border-view]
    (case @state/display-subject
      :start
-     [:<>
+     [:div {:tw "flex flex-col items-center gap-4"}
       [emoji-favicon "🤸"]
       [:form
-       [:label
-        [:div "Exercise duration (seconds):"]
-        [input {:type "number"
-                :min 1
-                :value (/ @state/exercise-duration 1000)
-                :on-change #(reset! state/exercise-duration (* 1000 (js/parseInt (.. % -target -value))))}]]
-       [:label
-        [:div "Rest duration (seconds):"]
-        [input {:type "number"
-                :min 1
-                :value (/ @state/rest-duration 1000)
-                :on-change #(reset! state/rest-duration (* 1000 (js/parseInt (.. % -target -value))))}]]]
-      (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises state/exercise-count)]
-                          ["ankle" ankle/routine]
-                          ["elbow" elbow/routine]
-                          ["knee" knee/routine]
-                          ["posture" posture/routine]
-                          ["stretch" stretch/routine]
-                          ["strength" strength/routine]]]
-        ^{:key label}
-        [button {:on-click #(state/start! data)} label])]
+       [:div {:tw "space-y-2"}
+        [:label {:tw "flex justify-between items-center gap-2"}
+         "Exercise duration (seconds):"
+         [input {:type "number"
+                 :min 1
+                 :style {:width "5em"}
+                 :value (/ @state/exercise-duration 1000)
+                 :on-change #(reset! state/exercise-duration (* 1000 (js/parseInt (.. % -target -value))))}]]
+        [:label {:tw "flex justify-between items-center gap-2"}
+         "Rest duration (seconds):"
+         [input {:type "number"
+                 :min 1
+                 :style {:width "5em"}
+                 :value (/ @state/rest-duration 1000)
+                 :on-change #(reset! state/rest-duration (* 1000 (js/parseInt (.. % -target -value))))}]]]]
+      [:div
+       (for [[label data] [["bodyweight" (routine/make-routine bodyweight/exercises state/exercise-count)]
+                           ["ankle" ankle/routine]
+                           ["elbow" elbow/routine]
+                           ["knee" knee/routine]
+                           ["posture" posture/routine]
+                           ["stretch" stretch/routine]
+                           ["strength" strength/routine]]]
+         ^{:key label}
+         [button {:on-click #(state/start! data)} label])]]
 
      :starting
      [:div]
@@ -83,10 +90,10 @@
         [:div {:tw "text-2xl font-bold h-40 flex items-center"} "PAUSED"])]
 
      :done
-     [:div
+     [:div {:tw "flex flex-col items-center gap-4"}
       [emoji-favicon "🛀"]
-      [:div "GOOD JOB"]
-      [button {:on-click #(state/restart!)} "start over"]]
+      [button {:on-click #(state/restart!)} "start over"]
+      [:div {:tw "text-2xl font-bold h-40 flex items-center"} "🎉 GOOD JOB! 🎉"]]
 
      ; default
      (let [exercise @state/display-subject
