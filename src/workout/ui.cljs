@@ -85,26 +85,31 @@
        [:div {:tw "flex flex-col items-center gap-4"}
         [emoji-favicon "🏋"]
         [:div
-         [button {:on-click #(state/force-stop!)} "stop"]
-         [button {:on-click #(state/skip!)} "next"]]
+         (if @state/paused?
+           [button {:on-click #(state/resume!)} "resume"]
+           [button {:on-click #(state/pause!)} "pause"])
+         [button {:on-click #(state/skip!)} "next"]
+         [button {:on-click #(state/force-stop!)} "stop"]]
         [:div {:tw "text-4xl font-bold"} (:exercise/name exercise)]
         [:div (:exercise/instructions exercise)]
-        (case (last (string/split filepath #"\."))
-          ("png" "gif")
-          [:img {:src filepath
-                 :style {:width "100vw"
-                         :max-height "100vh"
-                         :object-fit "contain"}}]
-          "webm"
-          [:video
-           {:src filepath
-            :style {:width "100vw"
-                    :max-height "100vh"
-                    :object-fit "contain"}
-            :auto-play true
-            :muted true
-            :loop true}]
-          nil)]))
+        (if @state/paused?
+          [:div {:tw "text-2xl font-bold h-40 flex items-center"} "PAUSED"]
+          (case (last (string/split filepath #"\."))
+            ("png" "gif")
+            [:img {:src filepath
+                   :style {:width "100vw"
+                           :max-height "100vh"
+                           :object-fit "contain"}}]
+            "webm"
+            [:video
+             {:src filepath
+              :style {:width "100vw"
+                      :max-height "100vh"
+                      :object-fit "contain"}
+              :auto-play true
+              :muted true
+              :loop true}]
+            nil))]))
 
    (when @state/current-routine
      [routine-view])])

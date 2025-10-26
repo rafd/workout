@@ -10,11 +10,18 @@
 (def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
-(defonce schedule-timeout (atom nil))
+(defonce schedule-timeout (r/atom nil))
 (defonce wakelock (atom nil))
 (defonce schedule (atom nil))
 (defonce current-schedule-index (atom nil))
 (defonce current-routine (r/atom nil))
+(defonce paused? (r/reaction 
+                  (nil? @schedule-timeout)))
+
+(defn clear-timeout! []
+  (when @schedule-timeout
+    (js/clearTimeout @schedule-timeout)
+    (reset! schedule-timeout nil)))
 
 (defn request-wakelock! []
   (when js/navigator.wakeLock
@@ -144,7 +151,7 @@
   (process-schedule!))
 
 (defn force-stop! []
-  (js/clearTimeout @schedule-timeout)
+  (clear-timeout!)
   (speak! "Quitting early? That's bollocks.")
   (release-wakelock!)
   (reset! display-subject :start)
@@ -153,14 +160,13 @@
   (reset! current-schedule-index nil))
 
 (defn skip! []
-  (js/clearTimeout @schedule-timeout)
-  (speak! "Next exercise.")
+  (clear-timeout!)
   ;; need to have logic to skip to next exercise; not just next scuedule (which may be the halfway voice state)
   (swap! current-schedule-index inc)
   (process-schedule!))
 
 (defn jump-to-exercise! [exercise]
-  (js/clearTimeout @schedule-timeout)
+  (clear-timeout!)
   (let [index (->> @schedule
                    (map-indexed vector)
                    (some (fn [[index [instruction item]]]
@@ -169,3 +175,9 @@
                              index))))]
     (reset! current-schedule-index index)
     (process-schedule!)))
+
+(defn pause! []
+  (clear-timeout!))
+
+(defn resume! []
+  (process-schedule!))
