@@ -1,14 +1,20 @@
 (ns workout.exercises.all
   (:require
-   [workout.exercises.bodyweight]
-   [workout.exercises.custom]
-   [workout.exercises.exercisedb]))
+   [clojure.string :as string]
+   [workout.exercises.bodyweight :as bodyweight]
+   [workout.exercises.custom :as custom]
+   [workout.exercises.exercisedb :as exercisedb]))
 
 (def all
   (concat
-   workout.exercises.bodyweight/exercises
-   workout.exercises.custom/exercises
-   (workout.exercises.exercisedb/exercises)))
+   bodyweight/exercises
+   custom/exercises
+   (exercisedb/exercises)))
 
-(def by-name
-  (zipmap (map :exercise/name all) all))
+(def indexed
+  (zipmap (map (comp string/lower-case :exercise/name) all)
+          all))
+
+(defn by-name
+  [name]
+  (get indexed (string/lower-case name)))
