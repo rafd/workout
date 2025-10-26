@@ -82,8 +82,8 @@
                          (phrases/random :motivation))]
                       [:delay (/ exercise-duration 2)]]))) $)
     (interpose-fn (fn [i]
-                    [[:blocking-say (phrases/random :rest)]
-                     [:display :rest]
+                    [[:display :rest]
+                     [:blocking-say (phrases/random :rest)]
                      [:blocking-say ((progress-phrase (count routine)) i)]])
                   $)
     (apply concat $)
