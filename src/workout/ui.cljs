@@ -39,7 +39,7 @@
    (if @state/paused?
      [button {:on-click #(state/resume!)} "resume"]
      [button {:on-click #(state/pause!)} "pause"])
-   [button {:on-click #(state/skip!)} "next"]
+   [button {:on-click #(state/skip!)} "skip"]
    [button {:on-click #(state/force-stop!)} "stop"]])
 
 (defn app-view []
@@ -86,7 +86,7 @@
      [:div
       [emoji-favicon "🛀"]
       [:div "GOOD JOB"]
-      [button {:on-click #(reset! state/display-subject :start)} "start over"]]
+      [button {:on-click #(state/restart!)} "start over"]]
 
      ; default
      (let [exercise @state/display-subject

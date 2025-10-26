@@ -62,6 +62,8 @@
         (= i (- total 3))
         "Almost there."))))
 
+(declare end!)
+
 (defn generate-schedule [{:keys [exercise-duration rest-duration routine]}]
   (as-> routine $
     (map (fn [exercise]
@@ -90,9 +92,9 @@
              [:blocking-say (phrases/random :introduction)]]
             $
             [[:display :done]
+             [:say (phrases/random :completion)]
              [:eval (fn []
-                      (release-wakelock!))]
-             [:say (phrases/random :completion)]])))
+                      (end!))]])))
 
 (defmulti process-instruction!
   (fn [[instruction-type _] _]
@@ -150,20 +152,20 @@
     (reset! current-routine routine))
   (process-schedule!))
 
-(defn force-stop! []
-  (clear-timeout!)
-  (speak! "Quitting early? That's bollocks.")
-  (release-wakelock!)
+(defn restart! []
   (reset! display-subject :start)
-  (reset! current-routine nil)
   (reset! schedule nil)
-  (reset! current-schedule-index nil))
+  (reset! current-schedule-index nil)
+  (reset! current-routine nil))
 
-(defn skip! []
+(defn end! []
   (clear-timeout!)
-  ;; need to have logic to skip to next exercise; not just next scuedule (which may be the halfway voice state)
-  (swap! current-schedule-index inc)
-  (process-schedule!))
+  (release-wakelock!))
+  
+(defn force-stop! []
+  (speak! "Quitting early? That's bollocks.")
+  (reset! display-subject :done)
+  (end!))
 
 (defn jump-to-exercise! [exercise]
   (clear-timeout!)
@@ -175,6 +177,20 @@
                              index))))]
     (reset! current-schedule-index index)
     (process-schedule!)))
+
+(defn skip! []
+  (let [exercise (->> @schedule
+                      (map-indexed vector)
+                      (drop-while (fn [[index _]]
+                                    (<= index @current-schedule-index)))
+                      (some (fn [[_ [instruction item]]]
+                              (when (and (= :display instruction)
+                                         ;; is an exercise
+                                         (map? item))
+                                item))))]
+    (if exercise
+      (jump-to-exercise! exercise)
+      (jump-to-exercise! :done))))
 
 (defn pause! []
   (reset! paused? true)
