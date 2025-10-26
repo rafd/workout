@@ -10,13 +10,12 @@
 (def exercise-count 8)
 
 (defonce display-subject (r/atom :start))
-(defonce schedule-timeout (r/atom nil))
+(defonce schedule-timeout (atom nil))
 (defonce wakelock (atom nil))
 (defonce schedule (atom nil))
 (defonce current-schedule-index (atom nil))
 (defonce current-routine (r/atom nil))
-(defonce paused? (r/reaction 
-                  (nil? @schedule-timeout)))
+(defonce paused? (r/atom false))
 
 (defn clear-timeout! []
   (when @schedule-timeout
@@ -127,6 +126,7 @@
   (done!))
 
 (defn process-schedule! []
+  (reset! paused? false)
   (when (< @current-schedule-index (count @schedule))
     (process-instruction! (nth @schedule @current-schedule-index)
                           (fn []
@@ -177,6 +177,7 @@
     (process-schedule!)))
 
 (defn pause! []
+  (reset! paused? true)
   (clear-timeout!))
 
 (defn resume! []

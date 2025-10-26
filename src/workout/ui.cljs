@@ -34,6 +34,14 @@
                     "font-bold text-yellow-500")]}
        (:exercise/name exercise)]))])
 
+(defn controls-view []
+  [:div
+   (if @state/paused?
+     [button {:on-click #(state/resume!)} "resume"]
+     [button {:on-click #(state/pause!)} "pause"])
+   [button {:on-click #(state/skip!)} "next"]
+   [button {:on-click #(state/force-stop!)} "stop"]])
+
 (defn app-view []
   [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh"}
    (case @state/display-subject
@@ -67,10 +75,12 @@
      [:div]
 
      :rest
-     [:div
+     [:div {:tw "flex flex-col items-center gap-4"}
       [emoji-favicon "🧘"]
-      [button {:on-click #(state/force-stop!)} "stop"]
-      [:div "RESTING"]]
+      [controls-view]
+      [:div {:tw "text-4xl font-bold"} "Resting"]
+      (when @state/paused?
+        [:div {:tw "text-2xl font-bold h-40 flex items-center"} "PAUSED"])]
 
      :done
      [:div
@@ -84,12 +94,7 @@
                         (str "/exercises/" (:exercise/media-file exercise)))]
        [:div {:tw "flex flex-col items-center gap-4"}
         [emoji-favicon "🏋"]
-        [:div
-         (if @state/paused?
-           [button {:on-click #(state/resume!)} "resume"]
-           [button {:on-click #(state/pause!)} "pause"])
-         [button {:on-click #(state/skip!)} "next"]
-         [button {:on-click #(state/force-stop!)} "stop"]]
+        [controls-view]
         [:div {:tw "text-4xl font-bold"} (:exercise/name exercise)]
         [:div (:exercise/instructions exercise)]
         (if @state/paused?
