@@ -22,6 +22,17 @@
   [:input (merge {:tw ["dark:bg-gray-700 dark:text-white border rounded px-2 py-1"]}
                  opts)])
 
+(defn routine-view []
+  [:div {:tw "fixed bottom-0 left-0 p-2"
+         :style {:background "#1f2937b0"}}
+   (doall
+    (for [exercise @state/current-routine]
+      ^{:key (:exercise/name exercise)}
+      [:div {:tw ["whitespace-nowrap"
+                  (when (= exercise @state/display-subject)
+                    "font-bold text-yellow-500")]}
+       (:exercise/name exercise)]))])
+
 (defn app-view []
   [:div {:tw "dark:bg-gray-800 dark:text-white min-h-100vh"}
    (case @state/display-subject
@@ -29,7 +40,7 @@
      [:<>
       [emoji-favicon "🤸"]
       [:form
-       [:label 
+       [:label
         [:div "Exercise duration (seconds):"]
         [input {:type "number"
                 :min 1
@@ -70,7 +81,7 @@
      (let [exercise @state/display-subject
            filepath (or (:exercise/media-url exercise)
                         (str "/exercises/" (:exercise/media-file exercise)))]
-       [:div {:tw "flex flex-col items-center"}
+       [:div {:tw "flex flex-col items-center gap-4"}
         [emoji-favicon "🏋"]
         [:div
          [button {:on-click #(state/force-stop!)} "stop"]
@@ -92,4 +103,7 @@
             :auto-play true
             :muted true
             :loop true}]
-          nil)]))])
+          nil)]))
+
+   (when @state/current-routine
+     [routine-view])])

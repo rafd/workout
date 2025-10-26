@@ -14,6 +14,7 @@
 (defonce wakelock (atom nil))
 (defonce schedule (atom nil))
 (defonce current-schedule-index (atom nil))
+(defonce current-routine (r/atom nil))
 
 (defn request-wakelock! []
   (when js/navigator.wakeLock
@@ -137,15 +138,19 @@
                               item))))]
     (reset! schedule (generate-schedule {:exercise-duration @exercise-duration
                                          :rest-duration @rest-duration
-                                         :routine routine})))
-  (reset! current-schedule-index 0)
+                                         :routine routine}))
+    (reset! current-schedule-index 0)
+    (reset! current-routine routine))
   (process-schedule!))
 
 (defn force-stop! []
   (js/clearTimeout @schedule-timeout)
   (speak! "Quitting early? That's bollocks.")
   (release-wakelock!)
-  (reset! display-subject :start))
+  (reset! display-subject :start)
+  (reset! current-routine nil)
+  (reset! schedule nil)
+  (reset! current-schedule-index nil))
 
 (defn skip! []
   (js/clearTimeout @schedule-timeout)
